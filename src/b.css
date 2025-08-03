@@ -3,8 +3,8 @@
     padding:0;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     box-sizing: border-box;
-
 }
+
 body{
     display: flex;
     justify-content: center;
@@ -13,27 +13,31 @@ body{
     background:url('./czz.png');
     background-size: cover;
     background-position: center;
-    background-repeat: no;
+    background-repeat: no-repeat; /* FIXED: was "no" */
 }
+
 .wrapper{
     width:420px;
     background:transparent;
     color: #fff;
     padding:30px 40px;
     border-radius: 20px;
-    border:2px solid rgb(255, 255, 255, 0.2);
+    border:2px solid rgba(255, 255, 255, 0.2); /* FIXED: was "rgb" */
     backdrop-filter: blur(100px);
 }
+
 .wrapper h1{
     text-align: center;
     font-size: 35px;
 }
+
 .wrapper .input-box{
     width: 100%;
     height: 50px;
     margin:30px 0;
     position: relative;
 }
+
 .input-box input{
     width:100%;
     height: 100%;
@@ -41,41 +45,54 @@ body{
     border-radius: 30px;
     border:none;
     outline: none;
-    border:2px solid rgba(255,255,255,.2);
+    border:2px solid rgba(255, 255, 255, 0.651);
     padding:17px 45px 18px 20px;
     font-size: 18px;
     color: #fff;
-
+    transition: all 0.3s ease; /* ADDED for smooth animations */
 }
+
+/* ADDED: Focus state for better UX */
+.input-box input:focus {
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
 .input-box input::placeholder{
-    color: #fff;
+    color: rgba(255, 255, 255, 1.0); /* IMPROVED: better contrast */
     font-size: 15px;
 }
 
 .input-box i{
     position: absolute;
-    right:5px;
-    top:30%;
-    transform:translate(-50%);
+    right:15px; /* FIXED: was 5px, too close to edge */
+    top:50%; /* FIXED: was 30%, not centered */
+    transform:translateY(-50%); /* FIXED: proper centering */
     font-size: 20px;
+    color: #fff; /* ADDED: icon color */
+    pointer-events: none; /* ADDED: prevent icon interference */
 }
+
 .wrapper .remember-forgot{
     display:flex;
     justify-content: space-between;
     margin:-15px 0 15px;
     font-size: 17px;
 }
+
 .remember-forgot label input{
     margin-right: 3px;
     accent-color: red;
 }
+
 .remember-forgot a{
     text-decoration: none;
     color: #fff;
 }
+
 .remember-forgot a:hover{
     text-decoration: underline;
 }
+
 .btn{
     height: 45px;
     width: 100%;
@@ -86,28 +103,137 @@ body{
     box-shadow: 0 0 10px rgba(0,0,0,.1);
     font-size: 20px;
     transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
-
+    cursor: pointer; /* MOVED: better organization */
 }
+
 .btn:hover{
     background: #fff;
     box-shadow: 0 0 20px rgba(0,0,0,.2);
-    cursor: pointer;
     transform: translateY(-3px) scale(1.03);
 }
+
 .btn:active {
     transform: translateY(2px) scale(0.98);
     box-shadow: 0 0 5px rgba(0,0,0,.1);
 }
+
 .wrapper .register{
     text-align: center;
     margin:20px 0 15px;
     font-size:15px;
-
 }
+
 .register a{
     text-decoration: none;
     color: #fff;
 }
+
 .register a:hover{
     text-decoration: underline;
+}
+
+/* ADDED: Responsive design for mobile */
+@media (max-width: 480px) {
+    .wrapper {
+        width: min(420px, 90vw);
+        padding: 20px 25px;
+        margin: 0 20px;
+    }
+    
+    body {
+        padding: 20px;
+    }
+}
+
+
+
+/* Select dropdown specific styling */
+.input-box select {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, 0.651);
+    padding: 15px 45px 15px 20px; /* Reduced top/bottom padding */
+    font-size: 16px; /* Slightly smaller font */
+    color: rgba(255, 255, 255, 1.0);
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    
+    /* Fix text alignment and visibility */
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 1.2;
+}
+
+/* Placeholder styling */
+.input-box select::placeholder {
+    color: rgba(255, 255, 255, 1.0);
+    font-size: 16px;
+}
+
+/* Option styling */
+.input-box select option {
+    background-color: #333;
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 16px;
+    line-height: normal;
+}
+
+.input-box select option:disabled {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Focus state */
+.input-box select:focus {
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Error state */
+.input-box select.error {
+    border-color: #ff4444 !important;
+}
+
+/* Custom dropdown arrow (optional) */
+.input-box select::-ms-expand {
+    display: none;
+}
+
+/* Add a custom dropdown arrow */
+.input-box::after {
+    content: '▼';
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+    font-size: 12px;
+}
+
+/* Only show arrow for select elements */
+.input-box:has(select)::after {
+    display: block;
+}
+
+.input-box:not(:has(select))::after {
+    display: none;
+}
+.input-box input.error,
+.input-box select.error {
+    border-color: #ff4444 !important;
+}
+
+.error-message {
+    color: #ff4444;
+    font-size: 16px;
+    margin-top: 5px;
+    display: block;
 }

@@ -1,6 +1,7 @@
-import React from 'react';
-import './b.css'; 
-import 'boxicons/css/boxicons.min.css'; 
+import React from "react";
+import { Link } from "react-router-dom";
+import "./b.css";
+import "boxicons/css/boxicons.min.css";
 
 const Login = () => {
   return (
@@ -22,13 +23,17 @@ const Login = () => {
           <label>
             <input type="checkbox" /> Remember Me
           </label>
-          <a href="#">Forgot password</a>
+          <Link to="#">Forgot password</Link>
         </div>
 
-        <button className="btn" type="submit">Login</button>
+        <button className="btn" type="submit">
+          Login
+        </button>
 
         <div className="register">
-          <p>Don't Have an Account? <a href="#">Register</a></p>
+          <p>
+            Don't Have an Account? <Link to="/signup">Register</Link>
+          </p>
         </div>
       </form>
     </div>
