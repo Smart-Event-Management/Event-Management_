@@ -237,3 +237,43 @@ body{
     margin-top: 5px;
     display: block;
 }
+
+
+
+
+/* Container for the social login buttons */
+.Event-login {
+  display: flex;
+  justify-content: space-between; /* This will distribute the space between the buttons */
+  gap: 10px; /* Adds space between the buttons */
+  margin-bottom: 20px; /* Adds some space below the buttons */
+}
+
+/* Style for individual social buttons */
+.Event-btn {
+  flex: 1; /* This makes all buttons have equal width */
+  padding: 10px;
+ border: 2px solid rgba(255, 255, 255, 0.651);
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  
+}
+
+/* Specific button colors for styling */
+.Event-btn.admin {
+  background-color: transparent; /* Google's red color */
+}
+
+.Event-btn.organizer {
+  background-color: transparent; /* Facebook's blue color */
+}
+
+.Event-btn.student {
+  background-color: transparent; /* GitHub's dark color */
+}
+
+
+

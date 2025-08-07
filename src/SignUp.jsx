@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +20,8 @@ const SignUp = () => {
       ...prev,
       [name]: value
     }));
-    
-    // Clear error when user starts typing
+
+    // Clear error on input
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -33,17 +33,14 @@ const SignUp = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
-    // Check password strength
     if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters long';
     }
 
-    // Check required fields
     if (!formData.username.trim()) newErrors.username = 'Username is required';
     if (!formData.rollNo.trim()) newErrors.rollNo = 'Roll number is required';
     if (!formData.department.trim()) newErrors.department = 'Department is required';
@@ -56,34 +53,40 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+
+    if (!validateForm()) return;
 
     setIsLoading(true);
-    
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log('Form submitted successfully:', formData);
-      alert('Account created successfully!');
-      
-      // Reset form
-      setFormData({
-        username: '',
-        rollNo: '',
-        department: '',
-        yearOfGraduation: '',
-        role: '',
-        password: '',
-        confirmPassword: ''
+      const response = await fetch('http://localhost/smart/signup.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
       });
-      
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        alert('Account created successfully!');
+        setFormData({
+          username: '',
+          rollNo: '',
+          department: '',
+          yearOfGraduation: '',
+          role: '',
+          password: '',
+          confirmPassword: ''
+        });
+      } else {
+        alert('Error: ' + result.message);
+      }
+
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Error creating account. Please try again.');
+      alert('Submission failed. Please check your server.');
     } finally {
       setIsLoading(false);
     }
@@ -95,62 +98,75 @@ const SignUp = () => {
         <h1>SIGN UP</h1>
 
         <div className="input-box">
-          <input 
-            type="text" 
+          <input
+            type="text"
             name="username"
             value={formData.username}
             onChange={handleInputChange}
-            required 
             placeholder="USERNAME"
             className={errors.username ? 'error' : ''}
+            required
           />
           <i className="bx bxs-user"></i>
           {errors.username && <span className="error-message">{errors.username}</span>}
         </div>
 
         <div className="input-box">
-          <input 
-            type="text" 
+          <input
+            type="text"
             name="rollNo"
             value={formData.rollNo}
             onChange={handleInputChange}
-            required 
             placeholder="ROLL NO"
             className={errors.rollNo ? 'error' : ''}
+            required
           />
           <i className="bx bxs-id-card"></i>
           {errors.rollNo && <span className="error-message">{errors.rollNo}</span>}
         </div>
 
+        <div className="input-box">
+          <input
+            type="text"
+            name="department"
+            value={formData.department}
+            onChange={handleInputChange}
+            placeholder="DEPARTMENT"
+            className={errors.department ? 'error' : ''}
+            required
+          />
+          <i className="bx bxs-building"></i>
+          {errors.department && <span className="error-message">{errors.department}</span>}
+        </div>
 
         <div className="input-box">
-          <input 
-            type="number" 
+          <input
+            type="number"
             name="yearOfGraduation"
             value={formData.yearOfGraduation}
             onChange={handleInputChange}
-            required 
             placeholder="YEAR OF GRADUATION"
             min="2020"
             max="2030"
             className={errors.yearOfGraduation ? 'error' : ''}
+            required
           />
           <i className="bx bxs-calendar"></i>
           {errors.yearOfGraduation && <span className="error-message">{errors.yearOfGraduation}</span>}
         </div>
 
         <div className="input-box">
-          <select 
+          <select
             name="role"
             value={formData.role}
             onChange={handleInputChange}
-            required
             className={errors.role ? 'error' : ''}
+            required
             style={{
               color: formData.role === '' ? 'rgba(255, 255, 255, 1.0)' : '#fff'
             }}
           >
-            <option value="" disabled style={{color: 'rgba(255, 255, 255, 0.7)'}}>SELECT ROLE</option>
+            <option value="" disabled style={{ color: 'rgba(255, 255, 255, 0.7)' }}>SELECT ROLE</option>
             <option value="student">Student</option>
             <option value="admin">Admin</option>
             <option value="organizer">Organizer</option>
@@ -160,43 +176,39 @@ const SignUp = () => {
         </div>
 
         <div className="input-box">
-          <input 
-            type="password" 
+          <input
+            type="password"
             name="password"
             value={formData.password}
             onChange={handleInputChange}
-            required 
             placeholder="PASSWORD"
             className={errors.password ? 'error' : ''}
+            required
           />
           <i className="bx bxs-lock"></i>
           {errors.password && <span className="error-message">{errors.password}</span>}
         </div>
 
         <div className="input-box">
-          <input 
-            type="password" 
+          <input
+            type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleInputChange}
-            required 
             placeholder="CONFIRM PASSWORD"
             className={errors.confirmPassword ? 'error' : ''}
+            required
           />
           <i className="bx bxs-lock"></i>
           {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
         </div>
 
-        <button 
-          className="btn" 
-          type="submit" 
-          disabled={isLoading}
-        >
+        <button className="btn" type="submit" disabled={isLoading}>
           {isLoading ? 'Creating Account...' : 'Sign Up'}
         </button>
 
         <div className="register">
-          <p>Already Have an Account? <a href="/login" style={{color: '#fff', textDecoration: 'none'}}>Login</a></p>
+          <p>Already Have an Account? <a href="/login" style={{ color: '#fff', textDecoration: 'none' }}>Login</a></p>
         </div>
       </form>
     </div>
