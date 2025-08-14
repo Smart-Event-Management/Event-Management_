@@ -1,30 +1,46 @@
-*{
-    margin:0;
-    padding:0;
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+* {
+    margin: 0;
+    padding: 0;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     box-sizing: border-box;
 }
 
-body{
+/* Remove global body background so it doesn't affect all pages */
+body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background:url('./czz.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; /* FIXED: was "no" */
 }
 
-.wrapper{
-    width:420px;
-    background:transparent;
+/* Background only for login & signup pages */
+.auth-page {
+  height: 100vh; /* Full viewport height */
+  width: 100vw;  /* Full viewport width */
+  background: url("czz.png") no-repeat center center;
+  background-size: cover; /* Makes image cover entire area */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Keep wrapper styles */
+.wrapper {
+    width: 420px;
+    background: transparent;
     color: #fff;
-    padding:30px 40px;
+    padding: 30px 40px;
     border-radius: 20px;
-    border:2px solid rgba(255, 255, 255, 0.2); /* FIXED: was "rgb" */
+    border: 2px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(100px);
 }
+
+/* ... keep all your other existing styles exactly the same */
 
 .wrapper h1{
     text-align: center;

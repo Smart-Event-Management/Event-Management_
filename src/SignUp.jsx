@@ -93,6 +93,7 @@ const SignUp = () => {
   };
 
   return (
+    <div className="auth-page">
     <div className="wrapper">
       <form onSubmit={handleSubmit}>
         <h1>SIGN UP</h1>
@@ -211,6 +212,7 @@ const SignUp = () => {
           <p>Already Have an Account? <a href="/login" style={{ color: '#fff', textDecoration: 'none' }}>Login</a></p>
         </div>
       </form>
+    </div>
     </div>
   );
 };
