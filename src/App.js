@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login';
 import SignUp from './SignUp'; // Match the actual filename
-import AdminDashboard from "./pages/AdminDashboard";
-import OrganizerDashboard from "./pages/OrganizerDashboard";
-import StudentDashboard from "./pages/StudentDashboard";
+import AdminDashboard from "./AdminDashboard";
+import OrganizerDashboard from "./OrganizerDashboard";
+import StudentDashboard from "./StudentDashboard";
 
 function App() {
   return (

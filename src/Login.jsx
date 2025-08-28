@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // ⬅️ Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import "./b.css";
 import "boxicons/css/boxicons.min.css";
 
@@ -9,7 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const navigate = useNavigate(); // ⬅️ Initialize navigate
+  const navigate = useNavigate();
 
   const handleRoleClick = (role) => {
     setSelectedRole(role);
@@ -41,7 +41,6 @@ const Login = () => {
       setMessage(result.message);
 
       if (result.success) {
-        // Redirect based on selectedRole
         if (selectedRole === "Admin") {
           navigate("/admin-dashboard");
         } else if (selectedRole === "Organizer") {
@@ -56,66 +55,68 @@ const Login = () => {
   };
 
   return (
-    <div className="wrapper">
-      <form onSubmit={handleSubmit}>
-        <h1>LOGIN</h1>
-        <br />
+    <div className="auth-page">
+      <div className="wrapper">
+        <form onSubmit={handleSubmit}>
+          <h1>LOGIN</h1>
+          <br />
 
-        <div className="Event-login">
-          <button type="button" className="Event-btn admin" onClick={() => handleRoleClick("Admin")}>
-            Admin
+          <div className="Event-login">
+            <button type="button" className="Event-btn admin" onClick={() => handleRoleClick("Admin")}>
+              Admin
+            </button>
+            <button type="button" className="Event-btn organizer" onClick={() => handleRoleClick("Organizer")}>
+              Organizer
+            </button>
+            <button type="button" className="Event-btn student" onClick={() => handleRoleClick("Student")}>
+              Student
+            </button>
+          </div>
+
+          {selectedRole && <h2 style={{ textAlign: "center" }}>{selectedRole}</h2>}
+
+          <div className="input-box">
+            <input
+              type="text"
+              required
+              placeholder="USERNAME"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <i className="bx bxs-user"></i>
+          </div>
+
+          <div className="input-box">
+            <input
+              type="password"
+              required
+              placeholder="PASSWORD"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <i className="bx bxs-lock"></i>
+          </div>
+
+          <div className="remember-forgot">
+            <label>
+              <input type="checkbox" /> Remember Me
+            </label>
+            <Link to="#">Forgot password</Link>
+          </div>
+
+          <button className="btn" type="submit">
+            Login
           </button>
-          <button type="button" className="Event-btn organizer" onClick={() => handleRoleClick("Organizer")}>
-            Organizer
-          </button>
-          <button type="button" className="Event-btn student" onClick={() => handleRoleClick("Student")}>
-            Student
-          </button>
-        </div>
 
-        {selectedRole && <h2 style={{ textAlign: "center" }}>{selectedRole}</h2>}
+          {message && <p style={{ textAlign: "center", color: "red" }}>{message}</p>}
 
-        <div className="input-box">
-          <input
-            type="text"
-            required
-            placeholder="USERNAME"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <i className="bx bxs-user"></i>
-        </div>
-
-        <div className="input-box">
-          <input
-            type="password"
-            required
-            placeholder="PASSWORD"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <i className="bx bxs-lock"></i>
-        </div>
-
-        <div className="remember-forgot">
-          <label>
-            <input type="checkbox" /> Remember Me
-          </label>
-          <Link to="#">Forgot password</Link>
-        </div>
-
-        <button className="btn" type="submit">
-          Login
-        </button>
-
-        {message && <p style={{ textAlign: "center", color: "red" }}>{message}</p>}
-
-        <div className="register">
-          <p>
-            Don't Have an Account? <Link to="/signup">Register</Link>
-          </p>
-        </div>
-      </form>
+          <div className="register">
+            <p>
+              Don't Have an Account? <Link to="/signup">Register</Link>
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
