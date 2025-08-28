@@ -263,7 +263,7 @@ body {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
-  gap: 6px;
+  gap: 15px;
 }
 
 .role-option {
@@ -294,9 +294,8 @@ body {
 
 /* Hidden text under role */
 .hidden-text {
-  width: 160px;
-  margin-top: 10px;
-  padding: 10px;
+  margin-top: 15px;
+  padding: 10px 20px;
   border: 2px solid rgba(255, 255, 255, 0.651);
   border-radius: 30px;
   font-size: 16px;

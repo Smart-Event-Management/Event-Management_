@@ -62,18 +62,40 @@ const Login = () => {
           <br />
 
           <div className="Event-login">
-            <button type="button" className="Event-btn admin" onClick={() => handleRoleClick("Admin")}>
-              Admin
-            </button>
-            <button type="button" className="Event-btn organizer" onClick={() => handleRoleClick("Organizer")}>
-              Organizer
-            </button>
-            <button type="button" className="Event-btn student" onClick={() => handleRoleClick("Student")}>
-              Student
-            </button>
-          </div>
+            <div className="role-option">
+              <button
+                type="button"
+                className="Event-btn admin"
+                onClick={() => handleRoleClick("Admin")}
+              >
+                Admin
+              </button>
+            </div>
 
-          {selectedRole && <h2 style={{ textAlign: "center" }}>{selectedRole}</h2>}
+            <div className="role-option">
+              <button
+                type="button"
+                className="Event-btn organizer"
+                onClick={() => handleRoleClick("Organizer")}
+              >
+                Organizer
+              </button>
+              {/* Selected role text always appears below Organizer */}
+              {selectedRole && (
+                <div className="hidden-text">{selectedRole}</div>
+              )}
+            </div>
+
+            <div className="role-option">
+              <button
+                type="button"
+                className="Event-btn student"
+                onClick={() => handleRoleClick("Student")}
+              >
+                Student
+              </button>
+            </div>
+          </div>
 
           <div className="input-box">
             <input
@@ -108,7 +130,9 @@ const Login = () => {
             Login
           </button>
 
-          {message && <p style={{ textAlign: "center", color: "red" }}>{message}</p>}
+          {message && (
+            <p style={{ textAlign: "center", color: "red" }}>{message}</p>
+          )}
 
           <div className="register">
             <p>
