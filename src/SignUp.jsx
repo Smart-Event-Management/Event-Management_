@@ -169,7 +169,7 @@ const SignUp = () => {
           >
             <option value="" disabled style={{ color: 'rgba(255, 255, 255, 0.7)' }}>SELECT ROLE</option>
             <option value="student">Student</option>
-            <option value="admin">Admin</option>
+          
             <option value="organizer">Organizer</option>
           </select>
           <i className="bx bxs-user-circle"></i>
