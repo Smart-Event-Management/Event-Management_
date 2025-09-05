@@ -22,7 +22,7 @@ $dbPass = "";
 $dbName = "alumnidb";
 
 // Image Configuration
-define('IMAGE_BASE_URL', 'http://localhost/events/images/');
+define('IMAGE_BASE_URL', 'http://localhost/event/Event_posters/');
 
 // Table Configuration
 $tableName = "event_registration";
