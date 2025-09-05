@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 24, 2025 at 08:50 AM
+-- Generation Time: Sep 05, 2025 at 12:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,21 +28,34 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `event_registration` (
-  `id` int(11) NOT NULL,
-  `Event_name` varchar(20) NOT NULL,
-  `Time` int(20) NOT NULL,
+  `id` varchar(225) NOT NULL,
+  `Event_name` varchar(225) NOT NULL,
+  `Time` varchar(225) NOT NULL,
   `Date` varchar(20) NOT NULL,
   `Venue` varchar(60) NOT NULL,
-  `Department` varchar(40) NOT NULL,
-  `Poster_name` varchar(30) NOT NULL
+  `Department` varchar(255) NOT NULL,
+  `Poster_name` varchar(255) NOT NULL,
+  `Event_links` varchar(225) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `event_registration`
 --
 
-INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `Department`, `Poster_name`) VALUES
-(0, '', 0, '', '', '', '');
+INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `Department`, `Poster_name`, `Event_links`) VALUES
+('e001', 'Club_spark', '2:00pm', '06/07/2025', 'HT3 lab', 'IT', 'Club_spark.jpg', 'https://Club_spark_google_form'),
+('e002', 'Aiml Arena\'25 coding', '', '03.09.2025', 'HT Labs1&2', '', 'Aiml_Arena\'25_coding_contest.j', ''),
+('e003', 'Amaravati quantunm valley hackathon 2025', '11:00am', '28.08.2025', '', 'computer science & business system', 'Amaravati_quantunm_valley_hack', '');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `event_registration`
+--
+ALTER TABLE `event_registration`
+  ADD PRIMARY KEY (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
