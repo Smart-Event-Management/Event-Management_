@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 05, 2025 at 10:08 AM
+-- Generation Time: Sep 05, 2025 at 10:11 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,7 +43,7 @@ CREATE TABLE `event_registration` (
 --
 
 INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `Department`, `Poster_name`, `Event_links`) VALUES
-(1, 'Club_spark', '2:00pm', '06/07/2025', 'HT3 lab', 'IT', 'Club_spark', 'https://Club_spark_google_form');
+(1, 'Club_spark', '2:00pm', '06/07/2025', 'HT3 lab', 'IT', 'Club_spark.jpg', 'https://Club_spark_google_form');
 
 --
 -- Indexes for dumped tables
