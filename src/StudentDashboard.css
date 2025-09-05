@@ -1,7 +1,9 @@
 body {
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #f7f4ed, #e6e2db);
+  height: 100vh;
+  margin: 0;
+  background-attachment: fixed;
 }
-
 /* Navbar Styles */
 .navbar {
   position: fixed;
@@ -144,4 +146,117 @@ body {
 .login-button:hover .login-button-sheen,
 .login-button:hover .login-button-glow {
   opacity: 1;
+}
+     
+
+
+
+
+
+
+/* IT posters section */
+/* IT posters section */
+.it-section {
+  margin-top: 40px;
+  margin-left: 0;        /* Stick to the left edge */
+  padding-left: 20px;    /* Small breathing room */
+  text-align: left;
+  width: fit-content;    /* Shrink section only around its content */
+  position: absolute;    /* Take it out of normal flow */
+  left: 0;               /* Pin to left */
+}
+
+
+.it-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+/* Border only under IT heading around posters */
+.poster-container {
+  display: flex;
+  gap: 20px;
+  border: 2px solid #000;   /* border around posters */
+  border-radius: 8px;
+  padding: 10px;
+  width: fit-content;       /* border auto-adjusts to content */
+  background-color: #fff;   /* optional */
+  flex-wrap: wrap;          /* allows wrapping if too many posters */
+}
+
+.poster-card {
+  width: 200px;
+  height: 200px;
+  background-color: #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.poster-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+    
+
+
+
+
+
+
+.poster-scroll-section {
+  margin: 20px;
+}
+
+.poster-scroll-section h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #fff; /* matches dark background */
+}
+
+.poster-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #0ea5e9 #1e293b;
+}
+
+.poster-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.poster-scroll::-webkit-scrollbar-thumb {
+  background: #0ea5e9;
+  border-radius: 10px;
+}
+
+.poster-card {
+  min-width: 200px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.poster-card:hover {
+  transform: scale(1.05);
+}
+
+.poster-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.poster-title {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #fff;
 }
