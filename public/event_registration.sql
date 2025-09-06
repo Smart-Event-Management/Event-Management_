@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 06, 2025 at 11:15 AM
+-- Generation Time: Sep 06, 2025 at 11:48 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,15 +43,15 @@ CREATE TABLE `event_registration` (
 --
 
 INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `Department`, `Poster_name`, `Event_links`) VALUES
-('e001', 'Club_spark', '2:00pm', '06/07/2025', 'HT3 lab', 'IT', 'Club_spark.jpg', 'https://Club_spark_google_form'),
-('e002', 'Aiml Arena\'25 coding', '', '03.09.2025', 'HT Labs1&2', '', 'Aiml_Arena\'25_coding_contest.j', ''),
-('e003', 'Amaravati quantunm valley hackathon 2025', '11:00am', '28.08.2025', '', 'computer science & business system', 'Amaravati_quantunm_valley_hack', ''),
-('e004', 'Colorido', '', '15-16 February', '', '', 'Colorido.jpg', ''),
-('e005', 'Engineers\'day celebration Quiz', '10:00AM', '26.09.2025', '', '', 'Engineer\'sday_celebration.jpg', ''),
-('e006', 'International yoga day', '11:00 AM', '21.06.2025', '', '', '', ''),
-('e007', 'Medhanvesh', '', '06.07.2025', '', '', 'Medhanvesh.jpg', ''),
-('e008', 'Photography talk', '11:00 AM', '23.04.2025', '', '', 'Photography_club.jpg', ''),
-('e009', 'Renewaloegy elergy (Poster Persontantion)', '2:00 PM', '30.06.2025', '', '', 'Renewaloegy_elergy.jpg', '');
+('e001', 'Club_spark', '2:00pm', '06/07/2025', 'HT3 lab', 'IT', 'Club_spark.jpg', 'https://docs.google.com/Clubspark/googleform'),
+('e002', 'Aiml Arena\'25 coding', '8:00 AM', '03.09.2025', 'HT Labs1&2', 'Computer Science Department', 'Aiml_Arena\'25_coding_contest.jpg', 'https://docs.google.com/AimlArena\'25coding_contest/googleform'),
+('e003', 'Amaravati quantunm valley hackathon 2025', '11:00am', '28.08.2025', 'HT Labs1&2', 'computer science & business system', 'Amaravati_quantunm_valley_hack', 'https://docs.google.com/Amaravatiquantunm_valley_hack'),
+('e004', 'Colorido', '10:00 AM', '15-16 February', '', '', 'Colorido.jpg', 'https://docs.google.com/Colorido'),
+('e005', 'Engineers\'day celebration Quiz', '10:00AM', '26.09.2025', 'HT3 lab', 'Computer Science Department', 'Engineer\'sday_celebration.jpg', 'https://docs.google.com/Engineer\'sday_celebration'),
+('e006', 'International yoga day', '11:00 AM', '21.06.2025', 'OAT', '', 'International_yoga_day.jpg', 'https://docs.google.com/International_yoga_day'),
+('e007', 'Medhanvesh', '8:00 AM', '06.07.2025', 'HT Lab4&5', 'ISTE', 'Medhanvesh.jpg', 'https://docs.google.com/Medhanvesh'),
+('e008', 'Photography talk', '11:00 AM', '23.04.2025', 'Digital Block (seminar hall)', 'CSM', 'Photography_club.jpg', 'https://docs.google.com/Photography_club'),
+('e009', 'Renewaloegy elergy (Poster Presentation)', '2:00 PM', '30.06.2025', 'OAT', '', 'Renewaloegy_elergy.jpg', 'https://docs.google.com/Renewaloegy_elergy');
 
 --
 -- Indexes for dumped tables
