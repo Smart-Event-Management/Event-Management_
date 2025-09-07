@@ -133,21 +133,10 @@ const StudentDashboard = () => {
         </div>
       </div>
       <main>
-        <section className="it-section">
-          <h2>IT Department</h2>
-          <div className="poster-container">
-            <div className="static-poster">
-              <img
-                src="https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=200&h=200&fit=crop"
-                alt="IT"
-              />
-            </div>
-            <div className="static-poster">
-              <img
-                src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=200&h=200&fit=crop"
-                alt="IT"
-              />
-            </div>
+        {/* The new "Manage Events" container */}
+        <section className="event-management-container">
+          <div className="event-tabs">
+            <div className="event-tab active-tab">Manage Events</div>
           </div>
         </section>
       </main>
