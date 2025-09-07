@@ -21,12 +21,9 @@ const Navbar = () => {
     <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
       <div className="navbar-container">
         <div className="navbar-content">
-          {/* Left: Logo */}
           <a href="/" className="navbar-brand">
-            MySite
+            Student Dashboard
           </a>
-
-          {/* Right: Links */}
           <div className="nav-links">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/about">About</NavLink>
@@ -47,89 +44,108 @@ const Navbar = () => {
 };
 
 const StudentDashboard = () => {
-  // ✅ posters state added
-  const [posters, setPosters] = useState([]);
+  const [posters] = useState([
+    {
+      id: 1,
+      image: "/scroll/1.jpg"
+    },
+    {
+      id: 2,
+      image: "/scroll/2.jpg"
+    },
+    {
+      id: 3,
+      image: "/scroll/3.jpg"
+    },
+    {
+      id: 4,
+      image: "/scroll/4.jpg"
+    },
+  ]);
 
-  // ✅ fetch posters from backend
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   useEffect(() => {
-    fetch("http://localhost/backend/fetch_posters.php")
-      .then((res) => res.json())
-      .then((data) => setPosters(data))
-      .catch((err) => console.error("Error fetching posters:", err));
-  }, []);
+    if (posters.length === 0) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % posters.length);
+    }, 4000); // 4 seconds delay
+    return () => clearInterval(interval);
+  }, [posters.length]);
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % posters.length);
+  };
+  const goToPrevious = () => {
+    setCurrentIndex((prev) => (prev - 1 + posters.length) % posters.length);
+  };
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
+
+  if (posters.length === 0) {
+    return (
+      <>
+        <Navbar />
+        <div className="loading-container">
+          <p>No posters available.</p>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
       <Navbar />
-      <main style={{ padding: "100px 2rem 2rem 2rem" }}>
-        {/* Main Content (centered) */}
-        <div style={{ textAlign: "center", marginBottom: "50px" }}>
-          <h1>Welcome to the Student Dashboard</h1>
-
-          {/* Poster Scroll Section */}
-          <section className="poster-scroll-section">
-            <h2>Event Posters</h2>
-            <div className="poster-scroll">
-              {posters.length > 0 ? (
-                posters.map((poster) => (
-                  <div key={poster.id} className="poster-card">
-                    <img
-                      src={`http://localhost/backend/${poster.image}`}
-                      alt={poster.title}
-                      className="poster-image"
-                    />
-                    <p className="poster-title">{poster.title}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No posters available</p>
-              )}
-            </div>
-          </section>
-        </div>
-
-        {/* IT Section (left-aligned) */}
-        <section className="it-section">
-          <h2
-            style={{
-              fontSize: "24px",
-              fontWeight: "bold",
-              marginBottom: "16px",
-            }}
-          >
-            IT
-          </h2>
-
-          {/* Poster Container with border */}
-          <div className="poster-container">
-            <div
-              style={{
-                width: "200px",
-                height: "200px",
-                backgroundColor: "#e2e8f0",
-                borderRadius: "8px",
-                overflow: "hidden",
-              }}
-            >
+      
+      <div className="carousel-container">
+        <div
+          className="carousel-wrapper"
+          style={{
+            width: `${posters.length * 100}%`,
+            transform: `translateX(-${currentIndex * (100 / posters.length)}%)`
+          }}
+        >
+          {posters.map((poster, index) => (
+            <div key={poster.id} className="carousel-slide">
               <img
-                src="https://placehold.co/200x200/a0aec0/ffffff?text=Image1"
-                alt="Image1"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                src={poster.image}
+                alt={`Poster ${poster.id}`}
+                className="poster-image"
               />
             </div>
-            <div
-              style={{
-                width: "200px",
-                height: "200px",
-                backgroundColor: "#e2e8f0",
-                borderRadius: "8px",
-                overflow: "hidden",
-              }}
-            >
+          ))}
+        </div>
+        <button className="carousel-nav prev" onClick={goToPrevious}>
+          ❮
+        </button>
+        <button className="carousel-nav next" onClick={goToNext}>
+          ❯
+        </button>
+        <div className="carousel-dots">
+          {posters.map((_, index) => (
+            <button
+              key={index}
+              className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}
+              onClick={() => goToSlide(index)}
+            />
+          ))}
+        </div>
+      </div>
+      <main>
+        <section className="it-section">
+          <h2>IT Department</h2>
+          <div className="poster-container">
+            <div className="static-poster">
               <img
-                src="https://placehold.co/200x200/a0aec0/ffffff?text=Image2"
-                alt="Image2"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                src="https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=200&h=200&fit=crop"
+                alt="IT"
+              />
+            </div>
+            <div className="static-poster">
+              <img
+                src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=200&h=200&fit=crop"
+                alt="IT"
               />
             </div>
           </div>
