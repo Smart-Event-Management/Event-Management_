@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-include_once '../config/database.php';
+//include_once '../config/database.php';
 
 class EventsAPI {
     private $conn;
@@ -70,7 +70,7 @@ class EventsAPI {
         
         // Convert associative array to indexed array
         $result = array();
-        $result["Departments"] = array_values($departments);
+        $result["departments"] = array_values($departments);
         
         return $result;
     }
@@ -87,7 +87,7 @@ class EventsAPI {
         $departments["departments"] = array();
         
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            array_push($departments["departments"], $row['department']);
+            array_push($departments["departments"], $row['Department']);
         }
         
         return $departments;
