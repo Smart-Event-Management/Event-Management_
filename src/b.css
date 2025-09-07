@@ -20,7 +20,7 @@ body {
 
 /* Background only for login & signup pages */
 .auth-page {
-  height: 100vh; /* Full viewport height */
+  height: 115vh; /* Full viewport height */
   width: 100vw;  /* Full viewport width */
   background: url("czz.png") no-repeat center center;
   background-size: cover; /* Makes image cover entire area */
