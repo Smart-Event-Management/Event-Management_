@@ -68,7 +68,7 @@ class EventAPI {
     public function getEventById($eventId) {
         try {
             // Validate input
-            if (empty($eventId) || !is_numeric($eventId)) {
+            if (empty($eventId)) {
                 return [
                     'success' => false,
                     'message' => 'Invalid event ID provided'
@@ -76,7 +76,7 @@ class EventAPI {
             }
             
             // Prepare SQL query to prevent SQL injection
-            $query = "SELECT id, Event_name, Time, Date, Venue, Department 
+            $query = "SELECT id, Event_name, Time, Date, Venue, Department,Poster_name,Event_links 
                      FROM event_registration 
                      WHERE id = ? 
                      LIMIT 1";
@@ -87,7 +87,7 @@ class EventAPI {
                 throw new Exception("Query preparation failed: " . $this->db->error);
             }
             
-            $stmt->bind_param("i", $eventId);
+            $stmt->bind_param("s", $eventId);
             $stmt->execute();
             
             $result = $stmt->get_result();
@@ -99,12 +99,14 @@ class EventAPI {
                     'success' => true,
                     'message' => 'Event found successfully',
                     'data' => [
-                        'id' => (int)$event['id'],
+                        'id' => $event['id'],
                         'eventName' => $event['Event_name'],
                         'time' => $event['Time'],
                         'date' => $event['Date'],
                         'venue' => $event['Venue'],
-                        'department' => $event['Department']
+                        'department' => $event['Department'],
+                        'poster' => $event['Poster_name'],
+                        'link' => $event['Event_links']
                     ]
                 ];
             } else {
@@ -133,7 +135,8 @@ function handleRequest() {
         case 'GET':
             if (isset($_GET['id'])) {
                 // Get specific event by ID
-                $eventId = (int)$_GET['id'];
+                $eventId = $_GET['id'];
+                error_log("DEBUG: Received ID -> " . $eventId);
                 $response = $eventAPI->getEventById($eventId);
             } else {
                 $response = [
