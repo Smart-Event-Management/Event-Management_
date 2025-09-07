@@ -39,27 +39,24 @@ try {
     // Set charset to prevent encoding issues
     $conn->set_charset("utf8");
 
-    // Validate table existence
-    $tableCheck = $conn->prepare("SHOW TABLES LIKE ?");
-    $tableCheck->bind_param("s", $tableName);
-    $tableCheck->execute();
-    $tableResult = $tableCheck->get_result();
-    
-    if ($tableResult->num_rows == 0) {
+    // ✅ FIX: Validate table existence (removed prepared statement)
+    $tableCheck = $conn->query("SHOW TABLES LIKE '{$tableName}'");
+    if (!$tableCheck || $tableCheck->num_rows == 0) {
         throw new Exception("Table '{$tableName}' not found");
     }
     $tableCheck->close();
 
-    // Get all columns from the table
-    $colsQuery = $conn->prepare("SHOW COLUMNS FROM `{$tableName}`");
-    $colsQuery->execute();
-    $colsResult = $colsQuery->get_result();
-    
+    // ✅ FIXED: Get all columns from the table (removed prepare)
+    $colsResult = $conn->query("SHOW COLUMNS FROM `{$tableName}`");
+    if (!$colsResult) {
+        throw new Exception("Failed to fetch columns: " . $conn->error);
+    }
+
     $cols = [];
     while ($colRow = $colsResult->fetch_assoc()) {
         $cols[] = $colRow['Field'];
     }
-    $colsQuery->close();
+    $colsResult->close();
 
     // Validate required columns exist
     if (!in_array($imageColumn, $cols)) {

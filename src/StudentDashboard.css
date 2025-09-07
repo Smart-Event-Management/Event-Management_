@@ -1,147 +1,294 @@
+/* StudentDashboard.css */
+
 body {
-  background-color: #f8f9fa;
+    background: linear-gradient(135deg, #f7f4ed, #e6e2db);
+    margin: 0;
+    background-attachment: fixed;
+    overflow-x: hidden;
 }
 
 /* Navbar Styles */
 .navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 50;
-  background-color: #111827;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-              0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  transition: padding 300ms ease-in-out;
-  padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 50;
+    background-color: #111827;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transition: padding 300ms ease-in-out;
+    padding: 1.1rem 0;
 }
 
 .navbar.scrolled {
-  padding: 0.5rem 0;
+    padding: 1rem 0;
 }
 
-/* Full-width container */
 .navbar-container {
-  width: 100%;
-  padding: 0 1rem; /* some breathing space on both sides */
+    width: 100%;
+    padding: 0 1rem;
 }
 
-/* Space logo far left and links far right */
 .navbar-content {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;
-  width: 100%;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%;
 }
 
-/* Logo */
 .navbar-brand {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.5rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
 }
 
 .navbar-brand:hover {
-  color: #60a5fa;
-  transform: scale(1.1);
+    color: #60a5fa;
+    transform: scale(1.1);
 }
 
-/* Nav links */
 .nav-links {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
-.nav-links > * + * {
-  margin-left: 1rem;
-}
-
-/* Link */
 .nav-link {
-  position: relative;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
-  font-size: 1.0rem;
-  font-weight: 500;
-  color: #d1d5db;
-  transition: all 300ms ease-out;
-  text-decoration: none;
+    position: relative;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 1.0rem;
+    font-weight: 510;
+    color: #d1d5db;
+    transition: all 300ms ease-out;
+    text-decoration: none;
 }
 
 .nav-link:hover {
-  color: white;
-  transform: scale(1.05);
-  background-color: rgba(31, 41, 55, 0.5);
+    color: white;
+    transform: scale(1.05);
+    background-color: rgba(31, 41, 55, 0.5);
 }
 
-/* Underline effect */
 .nav-link-underline {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 0.125rem;
-  background-image: linear-gradient(to right, #3b82f6, #06b6d4);
-  transition: all 300ms ease-out;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0.125rem;
+    background-image: linear-gradient(to right, #3b82f6, #06b6d4);
+    transition: all 300ms ease-out;
 }
 
 .nav-link:hover .nav-link-underline {
-  width: 100%;
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+    width: 100%;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
 }
 
-/* Login Button */
 .login-button {
-  position: relative;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: white;
-  background-image: linear-gradient(to right, #2563eb, #1d4ed8);
-  transition: all 300ms ease-out;
-  overflow: hidden;
-  border: none;
-  cursor: pointer;
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    background-image: linear-gradient(to right, #2563eb, #1d4ed8);
+    transition: all 300ms ease-out;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
 }
 
 .login-button:hover {
-  background-image: linear-gradient(to right, #1d4ed8, #1e40af);
-  transform: scale(1.05) translateY(-0.25rem);
+    background-image: linear-gradient(to right, #1d4ed8, #1e40af);
+    transform: scale(1.05) translateY(-0.25rem);
 }
 
 .login-button-text {
-  position: relative;
-  z-index: 10;
+    position: relative;
+    z-index: 10;
 }
 
 .login-button-sheen,
 .login-button-glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-  transition: opacity 300ms ease-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 300ms ease-out;
 }
 
 .login-button-sheen {
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1),
-                                    rgba(255, 255, 255, 0.05));
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
 }
 
 .login-button-glow {
-  background-image: linear-gradient(to right, rgba(59, 130, 246, 0.2),
-                                    rgba(6, 182, 212, 0.2));
-  filter: blur(4px);
+    background-image: linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2));
+    filter: blur(4px);
 }
 
 .login-button:hover .login-button-sheen,
 .login-button:hover .login-button-glow {
-  opacity: 1;
+    opacity: 1;
 }
+
+/* Welcome Container Styles */
+.welcome-container {
+    text-align: center;
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+
+.welcome-heading {
+    font-size: 3rem;
+    color: #333;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Full-Screen Carousel Styles */
+.carousel-container {
+    position: relative;
+    width: 100vw;
+    height: 60vh;
+    overflow: hidden;
+    margin-top: 100px;
+}
+
+.carousel-wrapper {
+    display: flex;
+    width: 500%;
+    height: 100%;
+    transform: translateX(0%);
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-slide {
+    width: 100vw;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.poster-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Navigation Controls */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    padding: 15px 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.carousel-nav:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-nav.prev {
+    left: 30px;
+}
+
+.carousel-nav.next {
+    right: 30px;
+}
+
+/* Dots Indicator */
+.carousel-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.carousel-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+    background: #3b82f6;
+    transform: scale(1.3);
+}
+
+.carousel-dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+
+/* --- New "Manage Events" container styles --- */
+.event-management-container {
+    max-width: 900px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    margin-left: 1rem; /* Added margin-left to position it to the left */
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0;
+}
+
+.event-tabs {
+    display: flex;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.event-tab {
+    padding: 1rem 1.5rem;
+    font-weight: 800;
+    font-size: 1.7rem;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.active-tab {
+    border-bottom: 2px solid #3b82f6;
+    color: #3b82f6;
+    font-weight: 700;
+}
+
+.event-content {
+    padding: 2rem;
+}
+
+.event-heading {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #111827;
+}
+
+.no-events-message {
+  color: #6b7280;
+}
+
