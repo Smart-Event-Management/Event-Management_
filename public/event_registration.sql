@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 06, 2025 at 11:48 AM
+-- Generation Time: Sep 10, 2025 at 07:54 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,23 +35,26 @@ CREATE TABLE `event_registration` (
   `Venue` varchar(60) NOT NULL,
   `Department` varchar(255) NOT NULL,
   `Poster_name` varchar(255) NOT NULL,
-  `Event_links` varchar(225) NOT NULL
+  `Event_links` varchar(225) NOT NULL,
+  `1st prices` int(50) NOT NULL,
+  `2nd prices` int(50) NOT NULL,
+  `3nd prices` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `event_registration`
 --
 
-INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `Department`, `Poster_name`, `Event_links`) VALUES
-('e001', 'Club_spark', '2:00pm', '06/07/2025', 'HT3 lab', 'IT', 'Club_spark.jpg', 'https://docs.google.com/Clubspark/googleform'),
-('e002', 'Aiml Arena\'25 coding', '8:00 AM', '03.09.2025', 'HT Labs1&2', 'Computer Science Department', 'Aiml_Arena\'25_coding_contest.jpg', 'https://docs.google.com/AimlArena\'25coding_contest/googleform'),
-('e003', 'Amaravati quantunm valley hackathon 2025', '11:00am', '28.08.2025', 'HT Labs1&2', 'computer science & business system', 'Amaravati_quantunm_valley_hack', 'https://docs.google.com/Amaravatiquantunm_valley_hack'),
-('e004', 'Colorido', '10:00 AM', '15-16 February', '', '', 'Colorido.jpg', 'https://docs.google.com/Colorido'),
-('e005', 'Engineers\'day celebration Quiz', '10:00AM', '26.09.2025', 'HT3 lab', 'Computer Science Department', 'Engineer\'sday_celebration.jpg', 'https://docs.google.com/Engineer\'sday_celebration'),
-('e006', 'International yoga day', '11:00 AM', '21.06.2025', 'OAT', '', 'International_yoga_day.jpg', 'https://docs.google.com/International_yoga_day'),
-('e007', 'Medhanvesh', '8:00 AM', '06.07.2025', 'HT Lab4&5', 'ISTE', 'Medhanvesh.jpg', 'https://docs.google.com/Medhanvesh'),
-('e008', 'Photography talk', '11:00 AM', '23.04.2025', 'Digital Block (seminar hall)', 'CSM', 'Photography_club.jpg', 'https://docs.google.com/Photography_club'),
-('e009', 'Renewaloegy elergy (Poster Presentation)', '2:00 PM', '30.06.2025', 'OAT', '', 'Renewaloegy_elergy.jpg', 'https://docs.google.com/Renewaloegy_elergy');
+INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `Department`, `Poster_name`, `Event_links`, `1st prices`, `2nd prices`, `3nd prices`) VALUES
+('e001', 'Club_spark', '2:00pm', '06/07/2025', 'HT3 lab', 'IT', 'Club_spark.jpg', 'https://docs.google.com/Clubspark/googleform', 5000, 2000, 1000),
+('e002', 'Aiml Arena\'25 coding', '8:00 AM', '03.09.2025', 'HT Labs1&2', 'Computer Science Department', 'Aiml_Arena\'25_coding_contest.jpg', 'https://docs.google.com/AimlArena\'25coding_contest/googleform', 4000, 2000, 1500),
+('e003', 'Amaravati quantunm valley hackathon 2025', '11:00am', '28.08.2025', 'HT Labs1&2', 'computer science & business system', 'Amaravati_quantunm_valley_hack', 'https://docs.google.com/Amaravatiquantunm_valley_hack', 4000, 3500, 2500),
+('e004', 'Colorido', '10:00 AM', '15-16 February', '', '', 'Colorido.jpg', 'https://docs.google.com/Colorido', 5000, 2000, 1000),
+('e005', 'Engineers\'day celebration Quiz', '10:00AM', '26.09.2025', 'HT3 lab', 'Computer Science Department', 'Engineer\'sday_celebration.jpg', 'https://docs.google.com/Engineer\'sday_celebration', 4500, 3000, 1000),
+('e006', 'International yoga day', '11:00 AM', '21.06.2025', 'OAT', '', 'International_yoga_day.jpg', 'https://docs.google.com/International_yoga_day', 2500, 1500, 1000),
+('e007', 'Medhanvesh', '8:00 AM', '06.07.2025', 'HT Lab4&5', 'ISTE', 'Medhanvesh.jpg', 'https://docs.google.com/Medhanvesh', 4500, 4000, 2500),
+('e008', 'Photography talk', '11:00 AM', '23.04.2025', 'Digital Block (seminar hall)', 'CSM', 'Photography_club.jpg', 'https://docs.google.com/Photography_club', 3000, 2000, 1000),
+('e009', 'Renewaloegy elergy (Poster Presentation)', '2:00 PM', '30.06.2025', 'OAT', '', 'Renewaloegy_elergy.jpg', 'https://docs.google.com/Renewaloegy_elergy', 4500, 2000, 1000);
 
 --
 -- Indexes for dumped tables
