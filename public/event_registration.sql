@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 10, 2025 at 07:54 AM
+-- Generation Time: Sep 10, 2025 at 05:11 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,16 +36,16 @@ CREATE TABLE `event_registration` (
   `Department` varchar(255) NOT NULL,
   `Poster_name` varchar(255) NOT NULL,
   `Event_links` varchar(225) NOT NULL,
-  `1st prices` int(50) NOT NULL,
-  `2nd prices` int(50) NOT NULL,
-  `3nd prices` int(50) NOT NULL
+  `First_prizes` int(50) NOT NULL,
+  `Second_prizes` int(50) NOT NULL,
+  `Third_prizes` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `event_registration`
 --
 
-INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `Department`, `Poster_name`, `Event_links`, `1st prices`, `2nd prices`, `3nd prices`) VALUES
+INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `Department`, `Poster_name`, `Event_links`, `First_prizes`, `Second_prizes`, `Third_prizes`) VALUES
 ('e001', 'Club_spark', '2:00pm', '06/07/2025', 'HT3 lab', 'IT', 'Club_spark.jpg', 'https://docs.google.com/Clubspark/googleform', 5000, 2000, 1000),
 ('e002', 'Aiml Arena\'25 coding', '8:00 AM', '03.09.2025', 'HT Labs1&2', 'Computer Science Department', 'Aiml_Arena\'25_coding_contest.jpg', 'https://docs.google.com/AimlArena\'25coding_contest/googleform', 4000, 2000, 1500),
 ('e003', 'Amaravati quantunm valley hackathon 2025', '11:00am', '28.08.2025', 'HT Labs1&2', 'computer science & business system', 'Amaravati_quantunm_valley_hack', 'https://docs.google.com/Amaravatiquantunm_valley_hack', 4000, 3500, 2500),
