@@ -43,10 +43,52 @@ const Navbar = () => {
   );
 };
 
+// Modal component to display event details
+const EventDetailsModal = ({ event, onClose }) => {
+  if (!event) return null;
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close-button" onClick={onClose}>
+          &times;
+        </button>
+        <div className="modal-header">
+          <img src={`/posters/${event.poster}`} alt={event.eventName} className="modal-poster" />
+          <h2 className="modal-title">{event.eventName}</h2>
+        </div>
+        <div className="modal-body">
+          <p>
+            <strong>Department:</strong> {event.department}
+          </p>
+          <p>
+            <strong>Date:</strong> {event.date}
+          </p>
+          <p>
+            <strong>Time:</strong> {event.time}
+          </p>
+          <p>
+            <strong>Venue:</strong> {event.venue}
+          </p>
+          {event.link && (
+            <p>
+              <strong>Event Link:</strong> <a href={event.link} target="_blank" rel="noopener noreferrer">{event.link}</a>
+            </p>
+          )}
+          {event.First_prizes && <p><strong>1st Prize:</strong> {event.First_prizes}</p>}
+          {event.Second_prizes && <p><strong>2nd Prize:</strong> {event.Second_prizes}</p>}
+          {event.Third_prizes && <p><strong>3rd Prize:</strong> {event.Third_prizes}</p>}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ManageEvents = () => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const scrollContainerRefs = useRef({});
 
   const handleScroll = (scrollAmount, departmentName) => {
@@ -54,6 +96,27 @@ const ManageEvents = () => {
     if (container) {
       container.scrollLeft += scrollAmount;
     }
+  };
+
+  const openEventModal = async (eventId) => {
+    try {
+      const response = await fetch(`http://localhost/backend/poster-button-click.php?id=${eventId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.success) {
+        setSelectedEvent(data.data);
+      } else {
+        setError(data.message);
+      }
+    } catch (e) {
+      setError("Failed to fetch event details. Please try again.");
+    }
+  };
+
+  const closeEventModal = () => {
+    setSelectedEvent(null);
   };
 
   useEffect(() => {
@@ -78,60 +141,63 @@ const ManageEvents = () => {
   }, []);
 
   return (
-    <section className="event-management-container">
-      <div className="event-tabs">
-        <div className="event-tab active-tab">Manage Events</div>
-      </div>
-
-      {loading && <div className="loading-state">Loading department posters...</div>}
-      
-      {error && <div className="error-state">{error}</div>}
-
-      {!loading && !error && (
-        <div className="department-posters-container">
-          {departments.map((department) => (
-            <div key={department.department_name} className="department-section">
-              <h2 className="department-title">{department.department_name}</h2>
-              <div className="poster-scroll-wrapper">
-                <button
-                  className="scroll-button left"
-                  onClick={() => handleScroll(-300, department.department_name)}
-                >
-                  ❮
-                </button>
-                <div
-                  className="poster-scroll-container"
-                  ref={(el) => (scrollContainerRefs.current[department.department_name] = el)}
-                >
-                  {department.events.length > 0 ? (
-                    department.events.map((event) => (
-                      <div key={event.id} className="poster-item">
-                        <img
-                          src={`/posters/${event.poster_name}`}
-                          alt={event.event_name}
-                          className="department-poster-image"
-                        />
-                        <p className="poster-caption">{event.event_name}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="no-posters-message">
-                      No posters available for this department.
-                    </p>
-                  )}
-                </div>
-                <button
-                  className="scroll-button right"
-                  onClick={() => handleScroll(300, department.department_name)}
-                >
-                  ❯
-                </button>
-              </div>
-            </div>
-          ))}
+    <>
+      <section className="event-management-container">
+        <div className="event-tabs">
+          <div className="event-tab active-tab">Manage Events</div>
         </div>
-      )}
-    </section>
+
+        {loading && <div className="loading-state">Loading department posters...</div>}
+        
+        {error && <div className="error-state">{error}</div>}
+
+        {!loading && !error && (
+          <div className="department-posters-container">
+            {departments.map((department) => (
+              <div key={department.department_name} className="department-section">
+                <h2 className="department-title">{department.department_name}</h2>
+                <div className="poster-scroll-wrapper">
+                  <button
+                    className="scroll-button left"
+                    onClick={() => handleScroll(-300, department.department_name)}
+                  >
+                    ❮
+                  </button>
+                  <div
+                    className="poster-scroll-container"
+                    ref={(el) => (scrollContainerRefs.current[department.department_name] = el)}
+                  >
+                    {department.events.length > 0 ? (
+                      department.events.map((event) => (
+                        <div key={event.id} className="poster-item" onClick={() => openEventModal(event.id)}>
+                          <img
+                            src={`/posters/${event.poster_name}`}
+                            alt={event.event_name}
+                            className="department-poster-image"
+                          />
+                          <p className="poster-caption">{event.event_name}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="no-posters-message">
+                        No posters available for this department.
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    className="scroll-button right"
+                    onClick={() => handleScroll(300, department.department_name)}
+                  >
+                    ❯
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+      <EventDetailsModal event={selectedEvent} onClose={closeEventModal} />
+    </>
   );
 };
 

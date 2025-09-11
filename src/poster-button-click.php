@@ -1,8 +1,4 @@
 <?php
-/**
- * Handles fetching event details by clicking on a poster/button
- */
-
 // Enable CORS for React frontend
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
@@ -17,18 +13,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 // Database configuration
 class DatabaseConfig {
-    private $host = "localhost";        
-    private $username = "root"; 
-    private $password = "";                
-    private $database = "alumnidb";      
+    private $host = "localhost";
+    private $username = "root";
+    private $password = "";
+    private $database = "alumnidb";
     private $connection;
 
     public function connect() {
         try {
             $this->connection = new mysqli(
-                $this->host, 
-                $this->username, 
-                $this->password, 
+                $this->host,
+                $this->username,
+                $this->password,
                 $this->database
             );
             
@@ -49,9 +45,6 @@ class DatabaseConfig {
             exit();
         }
     }
-    public function getConnection() {
-        return $this->connection;
-    }
 }
 
 // Event API class
@@ -62,12 +55,12 @@ class EventAPI {
         $database = new DatabaseConfig();
         $this->db = $database->connect();
     }
-     /**
+    
+    /**
      * Get event details by ID
      */
     public function getEventById($eventId) {
         try {
-            // Validate input
             if (empty($eventId)) {
                 return [
                     'success' => false,
@@ -75,8 +68,7 @@ class EventAPI {
                 ];
             }
             
-            // Prepare SQL query to prevent SQL injection
-            $query = "SELECT id, Event_name, Time, Date, Venue, Department,Poster_name,Event_links,First_prizes,Second_prizes,Third_prizes
+            $query = "SELECT id, Event_name, Time, Date, Venue, Department, Poster_name, Event_links, First_prizes, Second_prizes, Third_prizes
                      FROM event_registration 
                      WHERE id = ? 
                      LIMIT 1";
@@ -94,7 +86,6 @@ class EventAPI {
             if ($result->num_rows > 0) {
                 $event = $result->fetch_assoc();
                 
-                // Format the response for React frontend
                 return [
                     'success' => true,
                     'message' => 'Event found successfully',
@@ -110,7 +101,6 @@ class EventAPI {
                         'First_prizes' => $event['First_prizes'],
                         'Second_prizes' => $event['Second_prizes'],
                         'Third_prizes' => $event['Third_prizes']
-
                     ]
                 ];
             } else {
@@ -120,7 +110,6 @@ class EventAPI {
                     'data' => null
                 ];
             }
-            
         } catch (Exception $e) {
             return [
                 'success' => false,
@@ -130,6 +119,7 @@ class EventAPI {
         }
     }
 }
+
 // Main API router
 function handleRequest() {
     $method = $_SERVER['REQUEST_METHOD'];
@@ -138,9 +128,7 @@ function handleRequest() {
     switch ($method) {
         case 'GET':
             if (isset($_GET['id'])) {
-                // Get specific event by ID
                 $eventId = $_GET['id'];
-                error_log("DEBUG: Received ID -> " . $eventId);
                 $response = $eventAPI->getEventById($eventId);
             } else {
                 $response = [
@@ -151,11 +139,9 @@ function handleRequest() {
             break;
             
         case 'POST':
-            // Handle POST request with JSON body
             $input = json_decode(file_get_contents('php://input'), true);
-            
             if (isset($input['id'])) {
-                $eventId = (int)$input['id'];
+                $eventId = $input['id'];
                 $response = $eventAPI->getEventById($eventId);
             } else {
                 $response = [
@@ -173,7 +159,7 @@ function handleRequest() {
             ];
             break;
     }
-    // Set appropriate HTTP response code
+
     if (!$response['success']) {
         if (strpos($response['message'], 'not found') !== false) {
             http_response_code(404);
@@ -184,7 +170,6 @@ function handleRequest() {
         }
     }
     
-    // Return JSON response
     echo json_encode($response, JSON_PRETTY_PRINT);
 }
 
