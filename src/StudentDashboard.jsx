@@ -47,6 +47,14 @@ const ManageEvents = () => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const scrollContainerRefs = useRef({});
+
+  const handleScroll = (scrollAmount, departmentName) => {
+    const container = scrollContainerRefs.current[departmentName];
+    if (container) {
+      container.scrollLeft += scrollAmount;
+    }
+  };
 
   useEffect(() => {
     const fetchPosters = async () => {
@@ -56,7 +64,6 @@ const ManageEvents = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data);
         setDepartments(data.departments);
       } catch (e) {
         setError(
@@ -85,23 +92,40 @@ const ManageEvents = () => {
           {departments.map((department) => (
             <div key={department.department_name} className="department-section">
               <h2 className="department-title">{department.department_name}</h2>
-              <div className="poster-scroll-container">
-                {department.events.length > 0 ? (
-                  department.events.map((event) => (
-                    <div key={event.id} className="poster-item">
-                      <img
-                        src={`/posters/${event.poster_name}`}
-                        alt={event.event_name}
-                        className="department-poster-image"
-                      />
-                      <p className="poster-caption">{event.event_name}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="no-posters-message">
-                    No posters available for this department.
-                  </p>
-                )}
+              <div className="poster-scroll-wrapper">
+                <button
+                  className="scroll-button left"
+                  onClick={() => handleScroll(-300, department.department_name)}
+                >
+                  ❮
+                </button>
+                <div
+                  className="poster-scroll-container"
+                  ref={(el) => (scrollContainerRefs.current[department.department_name] = el)}
+                >
+                  {department.events.length > 0 ? (
+                    department.events.map((event) => (
+                      <div key={event.id} className="poster-item">
+                        <img
+                          src={`/posters/${event.poster_name}`}
+                          alt={event.event_name}
+                          className="department-poster-image"
+                        />
+                        <p className="poster-caption">{event.event_name}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="no-posters-message">
+                      No posters available for this department.
+                    </p>
+                  )}
+                </div>
+                <button
+                  className="scroll-button right"
+                  onClick={() => handleScroll(300, department.department_name)}
+                >
+                  ❯
+                </button>
               </div>
             </div>
           ))}

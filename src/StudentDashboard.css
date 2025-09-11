@@ -249,11 +249,11 @@ body {
 /* --- New "Manage Events" container styles --- */
 .event-management-container {
     max-width: 98%;
-    margin: 20px auto 40px auto;
+    margin: 20px auto 60px auto;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
 .event-tabs {
@@ -276,61 +276,123 @@ body {
     font-weight: 700;
 }
 
-.event-content {
-    padding: 2rem;
-}
-
-.event-heading {
-    font-size: 2rem;
-    font-weight: 900;
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: #111827;
-}
-
-.no-events-message {
-    color: #6b7280;
-}
-
-/* New CSS to support department-wise poster sections */
+/* Updated CSS for a cleaner, card-like design for each department section */
 .department-posters-container {
-    padding: 20px;
+    padding-top: 20px;
 }
 
 .department-section {
+    position: relative;
     margin-bottom: 3rem;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.department-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.department-section:last-child {
+    margin-bottom: 0;
 }
 
 .department-title {
-    font-size: 2.2rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 800;
     color: #1f2937;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.department-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #3b82f6, #06b6d4);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease-in-out;
+}
+
+.department-title:hover {
+    color: #3b82f6;
+}
+
+.department-title:hover::after {
+    transform: scaleX(1);
+}
+
+/* New wrapper to contain the scrollable section and buttons */
+.poster-scroll-wrapper {
+    position: relative;
 }
 
 .poster-scroll-container {
     display: flex;
     gap: 20px;
     overflow-x: auto;
-    padding: 1rem 0;
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #fefefe;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.16);
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: #3b82f6 #e2e8f0; /* Firefox */
+    scrollbar-width: none;
 }
 
-/* Webkit scrollbar for Chrome/Safari */
+/* Hide scrollbar for Webkit browsers */
 .poster-scroll-container::-webkit-scrollbar {
-    height: 8px;
+    display: none;
 }
 
-.poster-scroll-container::-webkit-scrollbar-track {
-    background: #e2e8f0;
-    border-radius: 10px;
+/* New Scroll Buttons */
+.scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #3b82f6;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
-.poster-scroll-container::-webkit-scrollbar-thumb {
-    background: #3b82f6;
-    border-radius: 10px;
+.poster-scroll-wrapper:hover .scroll-button {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.scroll-button.left {
+    left: 10px;
+}
+
+.scroll-button.right {
+    right: 10px;
 }
 
 .poster-item {
@@ -371,6 +433,14 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.no-posters-message {
+    color: #6b7280;
+    padding: 1rem;
+    background-color: #f8f8f8;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .loading-state,
