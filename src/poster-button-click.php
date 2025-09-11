@@ -76,7 +76,7 @@ class EventAPI {
             }
             
             // Prepare SQL query to prevent SQL injection
-            $query = "SELECT id, Event_name, Time, Date, Venue, Department,Poster_name,Event_links 
+            $query = "SELECT id, Event_name, Time, Date, Venue, Department,Poster_name,Event_links,First_prizes,Second_prizes,Third_prizes
                      FROM event_registration 
                      WHERE id = ? 
                      LIMIT 1";
@@ -106,7 +106,11 @@ class EventAPI {
                         'venue' => $event['Venue'],
                         'department' => $event['Department'],
                         'poster' => $event['Poster_name'],
-                        'link' => $event['Event_links']
+                        'link' => $event['Event_links'],
+                        'First_prizes' => $event['First_prizes'],
+                        'Second_prizes' => $event['Second_prizes'],
+                        'Third_prizes' => $event['Third_prizes']
+
                     ]
                 ];
             } else {
