@@ -476,9 +476,17 @@ body {
   max-width: 600px;
   width: 90%;
   max-height: 90vh;
-  overflow-y: hidden;
+  overflow-y: auto; /* Re-enables scrolling */
   position: relative;
   animation: modal-fade-in 0.3s ease-out;
+
+  /* Hide scrollbar for Chrome, Safari, and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none;
 }
 
 @keyframes modal-fade-in {
@@ -541,4 +549,57 @@ body {
 
 .modal-body a:hover {
   text-decoration: underline;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .navbar-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    .nav-links {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .carousel-container {
+        height: 40vh;
+        margin-top: 60px;
+    }
+    .carousel-nav {
+        font-size: 1.5rem;
+        padding: 10px 15px;
+    }
+    .carousel-nav.prev {
+        left: 15px;
+    }
+    .carousel-nav.next {
+        right: 15px;
+    }
+    .department-section {
+        padding: 1rem;
+        margin-bottom: 2rem;
+    }
+    .department-title {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    .department-title::after {
+        height: 2px;
+    }
+    .poster-item {
+        width: 180px;
+        height: 260px;
+    }
+    .modal-content {
+        padding: 1rem;
+        width: 95%;
+        max-width: 95%;
+    }
+    .modal-title {
+        font-size: 1.8rem;
+    }
 }
