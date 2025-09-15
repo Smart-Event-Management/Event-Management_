@@ -100,7 +100,7 @@ const ManageEvents = () => {
 
   const openEventModal = async (eventId) => {
     try {
-      const response = await fetch(`http://localhost/backend/poster-button-click.php?id=${eventId}`);
+      const response = await fetch(`http://localhost/smart/poster-button-click.php?id=${eventId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -122,7 +122,7 @@ const ManageEvents = () => {
   useEffect(() => {
     const fetchPosters = async () => {
       try {
-        const response = await fetch("http://localhost/stu/deptposters.php");
+        const response = await fetch("http://localhost/smart/deptposters.php");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
