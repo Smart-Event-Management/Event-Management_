@@ -25,14 +25,14 @@ const Navbar = () => {
             STUDENT DASHBOARD
           </a>
           <div className="nav-links">
-            <NavLink href="/">Home</NavLink>
-            <NavLink href="/about">About</NavLink>
-            <NavLink href="/contact">Contact</NavLink>
+            <NavLink href="/student-dashboard">Home</NavLink>
+            <NavLink href="https://rvrjcce.ac.in/">About</NavLink>
+            <NavLink href="https://rvrjcce.ac.in/xfeedback.php">Contact</NavLink>
             <button
               onClick={() => (window.location.href = "/login")}
               className="login-button"
             >
-              <span className="login-button-text">Login</span>
+              <span className="login-button-text">SIGN OUT</span>
               <div className="login-button-sheen"></div>
               <div className="login-button-glow"></div>
             </button>
