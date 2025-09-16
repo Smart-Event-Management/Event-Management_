@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 16, 2025 at 04:21 AM
+-- Generation Time: Sep 16, 2025 at 04:23 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,7 +59,7 @@ INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `
 ('e011', 'Club Waltz Event Poster', '2pm to 5pm', 'Sep 27&28', 'OAT', 'Mechanical Engineering', 'Club_Waltz_Event_Poster.jpg', 'https://docs.google.com/Club_Waltz_Event_Poster', 3000, 2000, 1500),
 ('e012', '40th Annual day', '8:00am', '23.04.2025', 'OAT', 'Information Technology', '40th_Annual_day.jpeg', 'https://docs.google.com/40th_Annual_day', 3000, 2000, 1000),
 ('e013', 'Club Waltz', '2:00pm', '27 & 28 September 2024 ', 'OAT', 'Mechanical Engineering', 'Club_Waltz.jpeg', 'https://docs.google.com/Club_Waltz', 4000, 2000, 1500),
-('e014', 'Anime Music Video', '2:00 to 4:00pm ', '20 july 2025', 'SJB seminar hall', 'Computer Science & Engineering', 'Anime_Music_Video.jpeg', 'https://docs.google.com/Anime_Music_Video', 3000, 2000, 1500);
+('e014', 'Anime Music Video', '2:00 to 4:00pm ', '20 july 2025', 'SJB (seminar hall)', 'Computer Science & Engineering', 'Anime_Music_Video.jpeg', 'https://docs.google.com/Anime_Music_Video', 3000, 2000, 1500);
 
 --
 -- Indexes for dumped tables
