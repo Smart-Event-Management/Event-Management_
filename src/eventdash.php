@@ -96,8 +96,9 @@ function getAllEvents() {
                     Event_links as event_links,
                     First_prizes as first_prizes,
                     Second_prizes as second_prizes,
-                    Third_prizes as third_prizes
-                FROM event_registration 
+                    Third_prizes as third_prizes,
+                    created_at
+                    FROM event_registration 
                 ORDER BY Date DESC, Time DESC";
         
         $stmt = $pdo->query($sql);
@@ -137,7 +138,8 @@ function getEvent($id) {
                     Event_links as event_links,
                     First_prizes as first_prizes,
                     Second_prizes as second_prizes,
-                    Third_prizes as third_prizes
+                    Third_prizes as third_prizes,
+                    created_at
                 FROM event_registration 
                 WHERE id = ?";
         
@@ -195,8 +197,8 @@ function createEvent() {
     try {
         $sql = "INSERT INTO event_registration (
                     Event_name, Time, Date, Venue, Department, Poster_name, 
-                    Event_links, First_prizes, Second_prizes, Third_prizes
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    Event_links, First_prizes, Second_prizes, Third_prizes,created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,NOW())";
         
         $stmt = $pdo->prepare($sql);
         $result = $stmt->execute([
