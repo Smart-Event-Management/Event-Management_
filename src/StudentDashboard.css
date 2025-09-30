@@ -603,3 +603,174 @@ body {
         font-size: 1.8rem;
     }
 }
+
+/* New Welcome Popup Styles */
+.welcome-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for better contrast */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 1; /* Make it visible by default */
+  transition: opacity 0.5s ease-out; /* Smooth transition for fading out */
+}
+
+.welcome-popup-content {
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  padding: 3rem 4rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(-200px); /* Start off-screen at the top */
+  animation: popup-bounce-in 1s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.welcome-popup-content h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #3b82f6;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* New Bounce-in Animation */
+@keyframes popup-bounce-in {
+  0% {
+    transform: translateY(-200px);
+    animation-timing-function: ease-in;
+  }
+  40% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  65% {
+    transform: translateY(-20px);
+    animation-timing-function: ease-in;
+  }
+  82% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  92% {
+    transform: translateY(-10px);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* StudentDashboard.css */
+
+/* ... (Existing CSS) ... */
+
+/* Navbar Styles */
+/* ... (Existing Navbar Styles) ... */
+
+/* Added for dropdown container */
+.profile-dropdown-container {
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    margin-left: 1rem;
+    z-index: 60;
+}
+
+.profile-button {
+    /* Base style for the profile button, replacing the Login button */
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    background-color: #3b82f6; /* Solid blue */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-button:hover {
+    background-color: #2563eb;
+    transform: none; /* Override general button hover effect */
+}
+
+.profile-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+
+.dropdown-arrow {
+    transition: transform 0.2s ease-in-out;
+}
+
+.dropdown-arrow.open {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Position right below the button */
+    right: 0;
+    margin-top: 0.5rem;
+    min-width: 150px;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    animation: dropdown-fade-in 0.2s ease-out;
+}
+
+.dropdown-item {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    text-align: left;
+    color: #1f2937;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdown-item:hover {
+    background-color: #f3f4f6;
+    color: #ef4444; /* Red color for sign-out hover */
+}
+
+@keyframes dropdown-fade-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ... (Rest of existing CSS, including Modal and Animations) ... */
