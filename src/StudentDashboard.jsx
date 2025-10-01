@@ -16,6 +16,7 @@ const Navbar = () => {
   
   // Get student name from localStorage on component mount
   useEffect(() => {
+    // CRITICAL CHANGE: Read the name directly from localStorage, not from a separate fetch.
     const name = localStorage.getItem('studentName');
     if (name) {
       setStudentName(name);
@@ -91,7 +92,6 @@ const Navbar = () => {
 
 // Modal component to display event details
 const EventDetailsModal = ({ event, onClose }) => {
-// ... (rest of EventDetailsModal remains unchanged)
   if (!event) return null;
 
   return (
@@ -130,7 +130,6 @@ const EventDetailsModal = ({ event, onClose }) => {
     </div>
   );
 };
-
 
 const ManageEvents = () => {
   const [departments, setDepartments] = useState([]);
@@ -222,6 +221,7 @@ const ManageEvents = () => {
                             src={`/posters/${event.poster_name}`}
                             alt={event.event_name}
                             className="department-poster-image"
+                            loading="lazy" // <--- ADD THIS ATTRIBUTE
                           />
                           <p className="poster-caption">{event.event_name}</p>
                         </div>
@@ -262,35 +262,13 @@ const StudentDashboard = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const wrapperRef = useRef(null);
   const [showWelcome, setShowWelcome] = useState(true);
-  const [studentName, setStudentName] = useState("");
-
+  const studentName = localStorage.getItem('studentName') || "";
   useEffect(() => {
-    const fetchStudentName = async () => {
-      const studentRollNo = localStorage.getItem('studentRollNo');
-      if (!studentRollNo) {
-        // If roll_no is not found, attempt to fetch only if needed for the popup
-        const storedName = localStorage.getItem('studentName');
-        if (storedName) {
-             setStudentName(storedName);
-        }
-        setShowWelcome(false);
-        return;
-      }
-      
-      try {
-        const response = await fetch(`http://localhost/smart/get_student_name.php?roll_no=${studentRollNo}`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            setStudentName(data.name);
-            localStorage.setItem('studentName', data.name); // Update local storage with the full name
-          }
-        }
-      } catch (e) {
-        console.error("Failed to fetch student name:", e);
-      }
-    };
-    fetchStudentName();
+    // This part now uses the 'studentName' state set above and just controls the timer
+    const timer = setTimeout(() => {
+      setShowWelcome(false);
+    }, 3500);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -315,12 +293,6 @@ const StudentDashboard = () => {
     }
   }, [currentIndex, slides.length]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowWelcome(false);
-    }, 3500);
-    return () => clearTimeout(timer);
-  }, []);
 
   const goToNext = () => {
     setCurrentIndex((prev) => prev + 1);
