@@ -41,6 +41,13 @@ const Login = () => {
       setMessage(result.message);
 
       if (result.success) {
+        // --- CRITICAL CHANGE: Store both RollNo (as username) and Name ---
+        localStorage.setItem('studentRollNo', username);
+        if (result.name) {
+          localStorage.setItem('studentName', result.name);
+        }
+        // -----------------------------------------------------------------
+
         if (selectedRole === "Admin") {
           navigate("/admin-dashboard");
         } else if (selectedRole === "Organizer") {

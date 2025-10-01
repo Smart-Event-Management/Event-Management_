@@ -695,3 +695,226 @@ body {
 }
 
 /* ... (Rest of existing CSS, including Modal and Animations) ... */
+
+
+
+/* New styles for the Create Event button (+) */
+.department-title {
+    /* Existing styles remain, we just need to align content differently */
+    display: flex;
+    justify-content: space-between; /* Space out the title and icon */
+    align-items: center;
+}
+
+.create-icon {
+    font-size: 1.8rem;
+    color: #28a745;
+    cursor: pointer;
+    margin-right: 1rem;
+    padding: 5px;
+    border-radius: 50%; /* Makes it round */
+    border: 2px solid #28a745; /* Added a visible green border */
+    background-color: white; /* Ensures it stands out from the background */
+    transition: all 0.2s ease-in-out;
+}
+
+.create-icon:hover {
+    color: white; /* White icon on hover */
+    background-color: #28a745; /* Solid green background on hover */
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5); /* Subtle glow */
+}
+/* Styles for the Create Event Form Modal */
+.create-event-modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    max-width: 700px; /* Wider modal for the form */
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-title-form {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.modal-subtitle {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.create-event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 0.3rem;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+    outline: none;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.error-message-form {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+
+
+/* --- New CSS for Delete Button in Event Details Modal --- */
+
+.modal-controls {
+    display: flex;
+    justify-content: space-between; /* Pushes delete to left, close to right */
+    align-items: center;
+    padding: 10px;
+    position: absolute; /* Position relative to modal-content */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10; /* Ensure it's above the poster */
+}
+
+.modal-delete-button {
+    background-color: #dc3545; /* Red background for delete */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1rem; /* Slightly larger text for better visibility */
+    display: flex; /* To center icon if text is added later */
+    align-items: center;
+    gap: 5px; /* Space between icon and text if you add it */
+    transition: background-color 0.2s ease;
+}
+
+.modal-delete-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+.modal-delete-button i.bx-trash {
+    font-size: 1.2rem; /* Make the trash icon larger */
+}
+
+/* Ensure the close button also looks good */
+.modal-close-button {
+    background: none;
+    border: none;
+    font-size: 2rem; /* Larger close icon */
+    color: #666;
+    cursor: pointer;
+    line-height: 1; /* Adjust line-height to prevent weird spacing */
+    padding: 0 5px; /* Give it some horizontal padding */
+    transition: color 0.2s ease;
+}
+
+.modal-close-button:hover {
+    color: #333;
+}
+
+/* Adjust the modal header to make space for the controls */
+.modal-header {
+    padding-top: 50px; /* Adjust this value as needed based on control bar height */
+    text-align: center;
+}
+
+.modal-poster {
+    max-width: 100%; /* Ensure image scales */
+    height: auto;
+    max-height: 300px; /* Limit height of poster in modal if needed */
+    object-fit: contain; /* Ensures entire image is visible */
+    margin-bottom: 15px;
+}
+
+/* Ensure the modal content itself has a relative position for absolute children */
+.modal-content {
+    position: relative;
+    padding: 20px; /* Add padding to prevent content from touching edges */
+    /* Other styles for modal-content like background, border-radius etc. */
+}

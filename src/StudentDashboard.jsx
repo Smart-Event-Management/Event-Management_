@@ -8,14 +8,36 @@ const NavLink = ({ href, children }) => (
   </a>
 );
 
+// --- START NEW NAVBAR COMPONENT ---
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [studentName, setStudentName] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
+  // Get student name from localStorage on component mount
+  useEffect(() => {
+    // CRITICAL CHANGE: Read the name directly from localStorage, not from a separate fetch.
+    const name = localStorage.getItem('studentName');
+    if (name) {
+      setStudentName(name);
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleSignOut = () => {
+    localStorage.removeItem('studentRollNo');
+    localStorage.removeItem('studentName');
+    window.location.href = "/login";
+  };
+  
+  const toggleDropdown = () => {
+      setIsDropdownOpen(prev => !prev);
+  };
 
   return (
     <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
@@ -28,20 +50,45 @@ const Navbar = () => {
             <NavLink href="/student-dashboard">Home</NavLink>
             <NavLink href="https://rvrjcce.ac.in/">About</NavLink>
             <NavLink href="https://rvrjcce.ac.in/xfeedback.php">Contact</NavLink>
-            <button
-              onClick={() => (window.location.href = "/login")}
-              className="login-button"
-            >
-              <span className="login-button-text">SIGN OUT</span>
-              <div className="login-button-sheen"></div>
-              <div className="login-button-glow"></div>
-            </button>
+            
+            {studentName ? (
+              // Profile Dropdown Button
+              <div className="profile-dropdown-container">
+                <button
+                  onClick={toggleDropdown}
+                  className="profile-button"
+                >
+                  <span className="profile-name">{studentName}</span>
+                  <i className={`bx bx-chevron-down dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}></i>
+                </button>
+                
+                {isDropdownOpen && (
+                  <div className="dropdown-menu">
+                    <button onClick={handleSignOut} className="dropdown-item">
+                      <i className="bx bx-log-out"></i> SIGN OUT
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              // Default Login Button
+              <button
+                onClick={() => (window.location.href = "/login")}
+                className="login-button"
+              >
+                <span className="login-button-text">LOGIN</span>
+                <div className="login-button-sheen"></div>
+                <div className="login-button-glow"></div>
+              </button>
+            )}
           </div>
         </div>
       </div>
     </nav>
   );
 };
+// --- END NEW NAVBAR COMPONENT ---
+
 
 // Modal component to display event details
 const EventDetailsModal = ({ event, onClose }) => {
@@ -144,7 +191,7 @@ const ManageEvents = () => {
     <>
       <section className="event-management-container">
         <div className="event-tabs">
-          <div className="event-tab active-tab">Manage Events</div>
+          <div className="event-tab active-tab">ACTIVE EVENTS</div>
         </div>
 
         {loading && <div className="loading-state">Loading department posters...</div>}
@@ -174,6 +221,7 @@ const ManageEvents = () => {
                             src={`/posters/${event.poster_name}`}
                             alt={event.event_name}
                             className="department-poster-image"
+                            loading="lazy" // <--- ADD THIS ATTRIBUTE
                           />
                           <p className="poster-caption">{event.event_name}</p>
                         </div>
@@ -213,6 +261,15 @@ const StudentDashboard = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const wrapperRef = useRef(null);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const studentName = localStorage.getItem('studentName') || "";
+  useEffect(() => {
+    // This part now uses the 'studentName' state set above and just controls the timer
+    const timer = setTimeout(() => {
+      setShowWelcome(false);
+    }, 3500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (slides.length <= 1) return;
@@ -235,6 +292,7 @@ const StudentDashboard = () => {
         "transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
     }
   }, [currentIndex, slides.length]);
+
 
   const goToNext = () => {
     setCurrentIndex((prev) => prev + 1);
@@ -272,6 +330,7 @@ const StudentDashboard = () => {
   return (
     <>
       <Navbar />
+      {showWelcome && studentName && <WelcomePopup name={studentName} />}
       <div className="carousel-container">
         <div
           className="carousel-wrapper"
@@ -318,6 +377,16 @@ const StudentDashboard = () => {
         <ManageEvents />
       </main>
     </>
+  );
+};
+
+const WelcomePopup = ({ name }) => {
+  return (
+    <div className="welcome-popup-overlay">
+      <div className="welcome-popup-content">
+        <h1>Welcome, {name}!</h1>
+      </div>
+    </div>
   );
 };
 
