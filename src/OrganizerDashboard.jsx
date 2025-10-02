@@ -128,7 +128,7 @@ const EventDetailsModal = ({ event, onClose, onDeleteSuccess }) => {
           </button>
         </div>
         <div className="modal-header">
-          <img src={`/posters/${event.poster}`} alt={event.eventName} className="modal-poster" />
+          <img src={`http://localhost/posters/${event.poster}`} alt={event.eventName} className="modal-poster" />
           <h2 className="modal-title">{event.eventName}</h2>
         </div>
         <div className="modal-body">
@@ -438,7 +438,7 @@ const ManageEvents = () => {
                       department.events.map((event) => (
                         <div key={event.id} className="poster-item" onClick={() => openEventModal(event.id)}>
                           <img
-                            src={`/posters/${event.poster_name}`}
+                            src={`http://localhost/posters/${event.poster_name}`}
                             alt={event.event_name}
                             className="department-poster-image"
                             loading="lazy"
