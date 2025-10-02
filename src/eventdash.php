@@ -4,7 +4,42 @@
  * Handles CRUD operations for events
  */
 
-require_once 'config.php';
+// --- UNIVERSAL PATH DEFINITION ---
+// This path is reliable for anyone running XAMPP/MAMP who places the project in a subfolder (e.g., /smart/public/posters)
+define('REACT_POSTERS_DIR', $_SERVER['DOCUMENT_ROOT'] . '/posters');
+// --- END UNIVERSAL PATH ---
+
+
+require_once 'config.php'; // Assuming this file sets up CORS headers and utility functions
+
+// Define utility function for reliable input retrieval (Unchanged, but necessary for context)
+function getReliableInput() {
+    $method = $_SERVER['REQUEST_METHOD'];
+    $data = [];
+
+    if ($method === 'POST' || $method === 'PUT') {
+        $content_type = $_SERVER['CONTENT_TYPE'] ?? '';
+        
+        if (strpos($content_type, 'application/json') !== false) {
+            $data = json_decode(file_get_contents('php://input'), true);
+        } elseif (strpos(strtolower($content_type), 'multipart/form-data') !== false || !empty($_POST)) {
+            $data = $_POST;
+        } else {
+            parse_str(file_get_contents('php://input'), $data);
+        }
+    }
+    
+    // Check for JSON decoding errors only if raw input was attempted
+    if ($method === 'POST' || $method === 'PUT') {
+        if (json_last_error() !== JSON_ERROR_NONE && strpos($_SERVER['CONTENT_TYPE'] ?? '', 'application/json') !== false) {
+             // Use the sendError function defined in config.php
+             sendError('Invalid JSON data', 400, json_last_error_msg());
+        }
+    }
+
+    return $data ? sanitizeInput($data) : [];
+}
+
 
 // Get request method and parse URL path
 $method = $_SERVER['REQUEST_METHOD'];
@@ -40,7 +75,7 @@ try {
             break;
             
         case 'POST':
-            createEvent();
+            createEvent(); 
             break;
             
         case 'PUT':
@@ -57,17 +92,30 @@ try {
             break;
             
         case 'DELETE':
-            if (!empty($path_segments)) {
-                $event_id = $path_segments[0];
+            // --- FIX START: Reliable ID retrieval for DELETE method ---
+            $event_id = null;
+            
+            // 1. Try to get ID from query string (most reliable for DELETE method from fetch API)
+            if (isset($_GET['id'])) {
+                $event_id = $_GET['id'];
+            }
+            // 2. Fallback to path segment check (original routing logic)
+            else if (!empty($path_segments) && is_numeric($path_segments[0])) {
+                 $event_id = $path_segments[0];
+            }
+
+            if ($event_id !== null) {
                 if (is_numeric($event_id)) {
                     deleteEvent($event_id);
                 } else {
                     sendError('Invalid event ID format', 400);
                 }
             } else {
+                // Return the specific error message the frontend is expecting
                 sendError('Event ID required for deletion', 400);
             }
             break;
+            // --- FIX END ---
             
         default:
             sendError('Method not allowed', 405);
@@ -86,20 +134,20 @@ function getAllEvents() {
     
     try {
         $sql = "SELECT 
-                    id,
-                    Event_name as event_name,
-                    Time as time,
-                    Date as date,
-                    Venue as venue,
-                    Department as department,
-                    Poster_name as poster_name,
-                    Event_links as event_links,
-                    First_prizes as first_prizes,
-                    Second_prizes as second_prizes,
-                    Third_prizes as third_prizes,
-                    created_at
-                    FROM event_registration 
-                ORDER BY Date DESC, Time DESC";
+                        id,
+                        Event_name as event_name,
+                        Time as time,
+                        Date as date,
+                        Venue as venue,
+                        Department as department,
+                        Poster_name as poster_name,
+                        Event_links as event_links,
+                        First_prizes as first_prizes,
+                        Second_prizes as second_prizes,
+                        Third_prizes as third_prizes,
+                        created_at
+                        FROM event_registration 
+                    ORDER BY Date DESC, Time DESC";
         
         $stmt = $pdo->query($sql);
         $events = $stmt->fetchAll();
@@ -128,20 +176,20 @@ function getEvent($id) {
     
     try {
         $sql = "SELECT 
-                    id,
-                    Event_name as event_name,
-                    Time as time,
-                    Date as date,
-                    Venue as venue,
-                    Department as department,
-                    Poster_name as poster_name,
-                    Event_links as event_links,
-                    First_prizes as first_prizes,
-                    Second_prizes as second_prizes,
-                    Third_prizes as third_prizes,
-                    created_at
-                FROM event_registration 
-                WHERE id = ?";
+                        id,
+                        Event_name as event_name,
+                        Time as time,
+                        Date as date,
+                        Venue as venue,
+                        Department as department,
+                        Poster_name as poster_name,
+                        Event_links as event_links,
+                        First_prizes as first_prizes,
+                        Second_prizes as second_prizes,
+                        Third_prizes as third_prizes,
+                        created_at
+                    FROM event_registration 
+                    WHERE id = ?";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$id]);
@@ -166,18 +214,72 @@ function getEvent($id) {
 }
 
 /**
- * Create new event
+ * Create new event (HANDLES FILE UPLOAD)
  */
 function createEvent() {
     global $pdo;
     
-    $input = getJsonInput();
+    // --- 1. Get Text Inputs ---
+    $input = getReliableInput(); 
     
+    // --- 2. Handle File Upload (Poster) ---
+    $poster_name = null;
+    $poster_file = $_FILES['poster'] ?? null;
+    
+    // Using the ABSOLUTE PATH constant defined at the top of the file
+    $upload_dir = REACT_POSTERS_DIR; 
+    $destination_path = null; // Initialize destination_path for cleanup logic
+
+    // Check if the poster file was successfully uploaded by the client
+    if ($poster_file && $poster_file['error'] === UPLOAD_ERR_OK) {
+        $file_tmp_name = $poster_file['tmp_name'];
+        $file_original_name = basename($poster_file['name']);
+        $file_extension = pathinfo($file_original_name, PATHINFO_EXTENSION);
+        
+        // Sanitize and create a unique filename (e.g., event_name_timestamp.ext)
+        $event_name_safe = $input['event_name'] ?? 'event'; 
+        $unique_filename = preg_replace("/[^a-zA-Z0-9_-]/", "_", $event_name_safe) . '_' . time() . '.' . $file_extension;
+        $destination_path = $upload_dir . '/' . $unique_filename;
+        
+        // Ensure the upload directory exists
+        if (!is_dir($upload_dir)) {
+            // Attempt to create the directory if it doesn't exist
+            if (!mkdir($upload_dir, 0777, true)) {
+                 sendError('Server Setup Error', 500, 'Upload directory could not be created. Check folder permissions.');
+            }
+        }
+        
+        // Check permissions before moving
+        if (!is_writable($upload_dir)) {
+             sendError('Permission Error', 500, 'The poster folder is not writable (Permission denied).');
+        }
+
+        if (move_uploaded_file($file_tmp_name, $destination_path)) {
+            $poster_name = $unique_filename;
+        } else {
+            sendError('Failed to upload poster file.', 500, 'Could not move file to destination. Check upload size limits.');
+        }
+    } else {
+        // Handle case where file is missing or upload failed for a reason other than UPLOAD_ERR_OK
+        $upload_error_msg = 'Poster file is required for the event or upload failed.';
+        if ($poster_file && $poster_file['error'] !== UPLOAD_ERR_NO_FILE) {
+            $upload_error_msg = 'Upload failed with error code: ' . $poster_file['error'];
+        }
+        sendError($upload_error_msg, 400);
+    }
+
+    // Ensure the poster name is included in the input for database insertion
+    $input['poster_name'] = $poster_name; 
+
     // Validate required fields
     $required_fields = ['event_name', 'time', 'date', 'venue', 'department', 'poster_name'];
     $missing_fields = validateRequiredFields($input, $required_fields);
     
     if (!empty($missing_fields)) {
+        // If validation fails, attempt to delete the uploaded file to clean up
+        if ($poster_name && $destination_path && file_exists($destination_path)) {
+            unlink($destination_path);
+        }
         sendError('Missing required fields', 400, [
             'missing_fields' => $missing_fields,
             'required_fields' => $required_fields
@@ -194,11 +296,12 @@ function createEvent() {
         sendError('Invalid time format. Please use HH:MM format.', 400);
     }
     
+    // --- 3. Insert Data into Database ---
     try {
         $sql = "INSERT INTO event_registration (
                     Event_name, Time, Date, Venue, Department, Poster_name, 
-                    Event_links, First_prizes, Second_prizes, Third_prizes,created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,NOW())";
+                    Event_links, First_prizes, Second_prizes, Third_prizes, created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
         
         $stmt = $pdo->prepare($sql);
         $result = $stmt->execute([
@@ -217,16 +320,19 @@ function createEvent() {
         if ($result) {
             $event_id = $pdo->lastInsertId();
             
-            // Return the created event
+            // Return the created event data (fetches full details)
             getEvent($event_id);
         } else {
             sendError('Failed to create event', 500, 'Database insert failed');
         }
         
     } catch (PDOException $e) {
+        // If database insert fails, attempt to delete the uploaded file
+        if ($poster_name && $destination_path && file_exists($destination_path)) {
+            unlink($destination_path);
+        }
         logError('Database error in createEvent', ['input' => $input, 'error' => $e->getMessage()]);
         
-        // Handle specific database errors
         if ($e->getCode() == 23000) {
             sendError('Event creation failed', 400, 'Duplicate entry or constraint violation');
         } else {
@@ -241,7 +347,43 @@ function createEvent() {
 function updateEvent($id) {
     global $pdo;
     
-    $input = getJsonInput();
+    // Check if the request is multipart/form-data (file upload)
+    $is_multipart = strpos($_SERVER['CONTENT_TYPE'] ?? '', 'multipart/form-data') !== false;
+
+    // Get input data
+    if ($is_multipart) {
+        // Use $_POST for form data
+        $input = sanitizeInput($_POST);
+    } else {
+        // Use getJsonInput() for raw JSON data (for PUT/JSON requests)
+        $input = getReliableInput(); // Use the reliable getter here
+    }
+    
+    // Handle optional file upload for PUT request
+    $new_poster_name = null;
+    if ($is_multipart && isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
+        // Logic similar to createEvent for handling and moving file
+        $file_tmp_name = $_FILES['poster']['tmp_name'];
+        $file_extension = pathinfo(basename($_FILES['poster']['name']), PATHINFO_EXTENSION);
+        
+        // Use a safe, unique filename
+        $event_name_safe = sanitizeInput($input['event_name'] ?? 'event'); 
+        $unique_filename = preg_replace("/[^a-zA-Z0-9_-]/", "_", $event_name_safe) . '_update_' . time() . '.' . $file_extension;
+        $upload_dir = REACT_POSTERS_DIR; // Use absolute path constant
+        $destination_path = $upload_dir . '/' . $unique_filename;
+
+        // Ensure directory exists
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+        
+        if (move_uploaded_file($file_tmp_name, $destination_path)) {
+            $new_poster_name = $unique_filename;
+            $input['poster_name'] = $new_poster_name; // Add to input array for database update
+        } else {
+            sendError('Failed to update poster file.', 500);
+        }
+    }
     
     if (empty($input)) {
         sendError('No data provided for update', 400);
@@ -249,11 +391,12 @@ function updateEvent($id) {
     
     try {
         // Check if event exists
-        $check_sql = "SELECT id FROM event_registration WHERE id = ?";
+        $check_sql = "SELECT id, Poster_name FROM event_registration WHERE id = ?";
         $check_stmt = $pdo->prepare($check_sql);
         $check_stmt->execute([$id]);
+        $existing_event = $check_stmt->fetch();
         
-        if (!$check_stmt->fetch()) {
+        if (!$existing_event) {
             sendError('Event not found', 404);
         }
         
@@ -319,7 +462,7 @@ function deleteEvent($id) {
     
     try {
         // Check if event exists first
-        $check_sql = "SELECT Event_name FROM event_registration WHERE id = ?";
+        $check_sql = "SELECT Event_name, Poster_name FROM event_registration WHERE id = ?";
         $check_stmt = $pdo->prepare($check_sql);
         $check_stmt->execute([$id]);
         $event = $check_stmt->fetch();
@@ -334,6 +477,12 @@ function deleteEvent($id) {
         $result = $delete_stmt->execute([$id]);
         
         if ($result && $delete_stmt->rowCount() > 0) {
+            // Optional: Delete the physical poster file
+            $poster_file_path = REACT_POSTERS_DIR . '/' . $event['Poster_name'];
+            if ($event['Poster_name'] && file_exists($poster_file_path)) {
+                unlink($poster_file_path);
+            }
+            
             sendSuccess([
                 'id' => (int)$id,
                 'deleted_event' => $event['Event_name']
