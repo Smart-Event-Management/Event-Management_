@@ -848,18 +848,86 @@ body {
 
 /* --- New CSS for Delete Button in Event Details Modal --- */
 
-.modal-controls {
-    display: flex;
-    justify-content: space-between; /* Pushes delete to left, close to right */
-    align-items: center;
-    padding: 10px;
-    position: absolute; /* Position relative to modal-content */
+/* --- MODAL/BUTTON STYLES (Primary Focus) --- */
+
+.modal-overlay {
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 10; /* Ensure it's above the poster */
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(5px);
 }
 
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px; /* Smoothly rounded container */
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative; /* CRITICAL: Enables absolute positioning of children */
+    /* Add padding to the top to prevent buttons from overlapping content */
+    padding-top: 55px; 
+}
+
+/* Container for Edit/Delete buttons (TOP LEFT) */
+.modal-controls {
+    /* Retained absolute positioning for correct placement */
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex; 
+    gap: 10px; /* Slightly increased gap for visual clarity */
+    z-index: 5;
+    width: auto; 
+    padding: 0;
+}
+
+/* Base style for all icon buttons - SMOOTH DESIGN */
+.icon-control-button {
+    width: 40px; /* Increased width */
+    height: 40px; /* Increased height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px; /* Smoother, more modern rounded corners */
+    border: none;
+    cursor: pointer;
+    font-size: 20px; /* Increased icon size */
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+    flex-shrink: 0;
+}
+/* Hover and active states for smooth interaction */
+.icon-control-button:hover {
+    transform: translateY(-1px); /* Subtle lift on hover */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* Clearer shadow effect */
+}
+
+/* 1. EDIT BUTTON (Sleek Action Color) */
+.modal-edit-button {
+    background-color: #dc3545; /* Red background for delete */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1rem; /* Slightly larger text for better visibility */
+    display: flex; /* To center icon if text is added later */
+    align-items: center;
+    gap: 5px; /* Space between icon and text if you add it */
+    transition: background-color 0.2s ease;
+}
+.modal-edit-button:hover {
+    background-color: #0056b3;
+}
+
+/* 2. DELETE BUTTON (Refined Red) */
 .modal-delete-button {
     background-color: #dc3545; /* Red background for delete */
     color: white;
@@ -873,48 +941,54 @@ body {
     gap: 5px; /* Space between icon and text if you add it */
     transition: background-color 0.2s ease;
 }
-
 .modal-delete-button:hover {
-    background-color: #c82333; /* Darker red on hover */
+    background-color: #c82333;
 }
 
-.modal-delete-button i.bx-trash {
-    font-size: 1.2rem; /* Make the trash icon larger */
-}
-
-/* Ensure the close button also looks good */
+/* 3. CLOSE BUTTON (Absolute Top Right) */
 .modal-close-button {
-    background: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 34px; /* Matched size */
+    height: 34px; /* Matched size */
     border: none;
-    font-size: 2rem; /* Larger close icon */
-    color: #666;
-    cursor: pointer;
-    line-height: 1; /* Adjust line-height to prevent weird spacing */
-    padding: 0 5px; /* Give it some horizontal padding */
-    transition: color 0.2s ease;
-}
-
-.modal-close-button:hover {
+    background: #f0f0f0; 
     color: #333;
+    border-radius: 50%; /* Fully round for distinct look */
+    font-size: 22px; /* Increased size for close 'X' */
+    line-height: 0;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.2s;  
+}
+.modal-close-button:hover {
+    background-color: #ccc;
 }
 
-/* Adjust the modal header to make space for the controls */
+
+/* --- MODAL BODY & CONTENT STYLES (Minimum for structure) --- */
+
 .modal-header {
-    padding-top: 50px; /* Adjust this value as needed based on control bar height */
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .modal-poster {
-    max-width: 100%; /* Ensure image scales */
+    max-width: 100%;
     height: auto;
-    max-height: 300px; /* Limit height of poster in modal if needed */
-    object-fit: contain; /* Ensures entire image is visible */
+    border-radius: 8px;
     margin-bottom: 15px;
 }
 
-/* Ensure the modal content itself has a relative position for absolute children */
-.modal-content {
-    position: relative;
-    padding: 20px; /* Add padding to prevent content from touching edges */
-    /* Other styles for modal-content like background, border-radius etc. */
+.modal-body p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: #4a5568;
 }
+
+.modal-body strong {
+    color: #1a202c;
+    margin-right: 5px;
+}
+
