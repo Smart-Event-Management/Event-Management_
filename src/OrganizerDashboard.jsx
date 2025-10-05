@@ -79,8 +79,8 @@ const Navbar = () => {
   }, []);
 
   const handleSignOut = () => {
-    localStorage.removeItem("studentRollNo");
-    localStorage.removeItem("studentName");
+    // Use clear() for a full sign-out
+    localStorage.clear();
     window.location.href = "/login";
   };
 
@@ -569,7 +569,48 @@ const EventFormModal = ({
     </div>
   );
 };
+const LazyLoadWrapper = ({ children, height = 300 }) => {
+  // Now accepts a height prop
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
 
+  useEffect(() => {
+    const currentRef = ref.current;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (currentRef) {
+            observer.unobserve(currentRef);
+          }
+        }
+      },
+      {
+        // INCREASED: Start loading when the item is 600px away from the viewport.
+        // This gives the browser plenty of time. You can adjust this value.
+        rootMargin: "850px",
+      }
+    );
+
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
+  // Uses the height prop for the placeholder to prevent page jumping
+  return (
+    <div ref={ref} style={{ minHeight: `${height}px` }}>
+      {isVisible ? children : null}
+    </div>
+  );
+};
 const ManageEvents = () => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -677,74 +718,74 @@ const ManageEvents = () => {
         {!loading && !error && (
           <div className="department-posters-container">
             {departments.map((department) => (
-              <div
-                key={department.department_name}
-                className="department-section"
-              >
-                <h2 className="department-title">
-                  {decodeHtml(department.department_name)}
-                  {/* PLUS ICON: Triggers the new modal and sets the department name */}
-                  <i
-                    className="bx bx-plus create-icon"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPrefilledDepartment(
-                        decodeHtml(department.department_name)
-                      ); // Set the decoded name here
-                      setEventToEdit(null); // Ensure creation mode is active
-                      setIsCreateModalOpen(true);
-                    }}
-                  ></i>
-                </h2>
-                <div className="poster-scroll-wrapper">
-                  <button
-                    className="scroll-button left"
-                    onClick={() =>
-                      handleScroll(-300, department.department_name)
-                    }
-                  >
-                    ❮
-                  </button>
-                  <div
-                    className="poster-scroll-container"
-                    ref={(el) =>
-                      (scrollContainerRefs.current[department.department_name] =
-                        el)
-                    }
-                  >
-                    {department.events.length > 0 ? (
-                      department.events.map((event) => (
-                        <div
-                          key={event.id}
-                          className="poster-item"
-                          onClick={() => openEventModal(event.id)}
-                        >
-                          <img
-                            // Use the correct base URL for image display
-                            src={`http://localhost/posters/${event.poster_name}`}
-                            alt={event.event_name}
-                            className="department-poster-image"
-                            loading="lazy"
-                          />
-                          <p className="poster-caption">{event.event_name}</p>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="no-posters-message">
-                        No posters available for this department.
-                      </p>
-                    )}
+              <LazyLoadWrapper key={department.department_name} height={500}>
+                <div className="department-section">
+                  <h2 className="department-title">
+                    {decodeHtml(department.department_name)}
+                    {/* PLUS ICON: Triggers the new modal and sets the department name */}
+                    <i
+                      className="bx bx-plus create-icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPrefilledDepartment(
+                          decodeHtml(department.department_name)
+                        ); // Set the decoded name here
+                        setEventToEdit(null); // Ensure creation mode is active
+                        setIsCreateModalOpen(true);
+                      }}
+                    ></i>
+                  </h2>
+                  <div className="poster-scroll-wrapper">
+                    <button
+                      className="scroll-button left"
+                      onClick={() =>
+                        handleScroll(-300, department.department_name)
+                      }
+                    >
+                      ❮
+                    </button>
+                    <div
+                      className="poster-scroll-container"
+                      ref={(el) =>
+                        (scrollContainerRefs.current[
+                          department.department_name
+                        ] = el)
+                      }
+                    >
+                      {department.events.length > 0 ? (
+                        department.events.map((event) => (
+                          <div
+                            key={event.id}
+                            className="poster-item"
+                            onClick={() => openEventModal(event.id)}
+                          >
+                            <img
+                              // Use the correct base URL for image display
+                              src={`http://localhost/posters/${event.poster_name}`}
+                              alt={event.event_name}
+                              className="department-poster-image"
+                              loading="lazy"
+                            />
+                            <p className="poster-caption">{event.event_name}</p>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="no-posters-message">
+                          No posters available for this department.
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      className="scroll-button right"
+                      onClick={() =>
+                        handleScroll(300, department.department_name)
+                      }
+                    >
+                      ❯
+                    </button>
                   </div>
-                  <button
-                    className="scroll-button right"
-                    onClick={() =>
-                      handleScroll(300, department.department_name)
-                    }
-                  >
-                    ❯
-                  </button>
                 </div>
-              </div>
+              </LazyLoadWrapper>
             ))}
           </div>
         )}
@@ -823,6 +864,28 @@ const OrganizerDashboard = () => {
     }
   }, [currentIndex, slides.length]);
 
+  // ADDED: This useEffect hook tracks user activity
+  useEffect(() => {
+    const markUserAsActive = async () => {
+      const userRole = localStorage.getItem("userRole");
+      const userId = localStorage.getItem("userId");
+
+      if (userRole && userId) {
+        try {
+          await fetch("http://localhost/smart/update_activity.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ role: userRole, id: userId }),
+          });
+        } catch (error) {
+          console.error("Could not update user activity:", error);
+        }
+      }
+    };
+
+    markUserAsActive();
+  }, []);
+
   const goToNext = () => {
     setCurrentIndex((prev) => prev + 1);
   };
@@ -866,7 +929,7 @@ const OrganizerDashboard = () => {
           ref={wrapperRef}
           style={{
             width: `${slides.length * 100}%`,
-            transform: `translateX(-${currentIndex * (100 / slides.length)}%)`,
+            transform: `translateX(-${(currentIndex * 100) / slides.length}%)`,
           }}
         >
           {slides.map((poster, index) => (

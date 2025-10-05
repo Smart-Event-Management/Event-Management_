@@ -38,15 +38,18 @@ const Login = () => {
       });
 
       const result = await response.json();
-      setMessage(result.message);
+      
 
       if (result.success) {
-        // --- CRITICAL CHANGE: Store both RollNo (as username) and Name ---
-        localStorage.setItem('studentRollNo', username);
-        if (result.name) {
-          localStorage.setItem('studentName', result.name);
-        }
-        // -----------------------------------------------------------------
+        // === THIS IS THE FIX ===
+        // We now read the 'userData' object from the PHP response.
+        const { userId, userName, role } = result.userData;
+
+        // And save the correct, generic data needed for the whole app.
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('userRole', role);
+        localStorage.setItem('studentName', userName); // Used for the name in the navbar
+        // ======================
 
         if (selectedRole === "Admin") {
           navigate("/admin-dashboard");
@@ -55,6 +58,9 @@ const Login = () => {
         } else if (selectedRole === "Student") {
           navigate("/student-dashboard");
         }
+      } else {
+        // If login is not successful, show the error message
+        setMessage(result.message);
       }
     } catch (error) {
       setMessage("Server error. Please try again later.");
