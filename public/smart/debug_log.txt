@@ -1,0 +1,4 @@
+--- New Activity Update Request ---
+1. Received raw data: {"role":"Admin","id":"3"}
+2. Decoded Role: 'Admin', ID: '3'
+ERROR: Unknown role.

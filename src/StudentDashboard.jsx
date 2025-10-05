@@ -11,13 +11,12 @@ const NavLink = ({ href, children }) => (
 // --- START NEW NAVBAR COMPONENT ---
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [studentName, setStudentName] = useState('');
+  const [studentName, setStudentName] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
+
   // Get student name from localStorage on component mount
   useEffect(() => {
-    // CRITICAL CHANGE: Read the name directly from localStorage, not from a separate fetch.
-    const name = localStorage.getItem('studentName');
+    const name = localStorage.getItem("studentName");
     if (name) {
       setStudentName(name);
     }
@@ -29,14 +28,14 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // CORRECTED: Use localStorage.clear() for a full sign-out
   const handleSignOut = () => {
-    localStorage.removeItem('studentRollNo');
-    localStorage.removeItem('studentName');
+    localStorage.clear();
     window.location.href = "/login";
   };
-  
+
   const toggleDropdown = () => {
-      setIsDropdownOpen(prev => !prev);
+    setIsDropdownOpen((prev) => !prev);
   };
 
   return (
@@ -49,19 +48,22 @@ const Navbar = () => {
           <div className="nav-links">
             <NavLink href="/student-dashboard">Home</NavLink>
             <NavLink href="https://rvrjcce.ac.in/">About</NavLink>
-            <NavLink href="https://rvrjcce.ac.in/xfeedback.php">Contact</NavLink>
-            
+            <NavLink href="https://rvrjcce.ac.in/xfeedback.php">
+              Contact
+            </NavLink>
+
             {studentName ? (
               // Profile Dropdown Button
               <div className="profile-dropdown-container">
-                <button
-                  onClick={toggleDropdown}
-                  className="profile-button"
-                >
+                <button onClick={toggleDropdown} className="profile-button">
                   <span className="profile-name">{studentName}</span>
-                  <i className={`bx bx-chevron-down dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}></i>
+                  <i
+                    className={`bx bx-chevron-down dropdown-arrow ${
+                      isDropdownOpen ? "open" : ""
+                    }`}
+                  ></i>
                 </button>
-                
+
                 {isDropdownOpen && (
                   <div className="dropdown-menu">
                     <button onClick={handleSignOut} className="dropdown-item">
@@ -89,7 +91,6 @@ const Navbar = () => {
 };
 // --- END NEW NAVBAR COMPONENT ---
 
-
 // Modal component to display event details
 const EventDetailsModal = ({ event, onClose }) => {
   if (!event) return null;
@@ -101,7 +102,12 @@ const EventDetailsModal = ({ event, onClose }) => {
           &times;
         </button>
         <div className="modal-header">
-          <img src={`/posters/${event.poster}`} alt={event.eventName} className="modal-poster" />
+          {/* CORRECTED: Use the full, absolute path for the image */}
+          <img
+            src={`http://localhost/posters/${event.poster}`}
+            alt={event.eventName}
+            className="modal-poster"
+          />
           <h2 className="modal-title">{event.eventName}</h2>
         </div>
         <div className="modal-body">
@@ -119,18 +125,74 @@ const EventDetailsModal = ({ event, onClose }) => {
           </p>
           {event.link && (
             <p>
-              <strong>Event Link:</strong> <a href={event.link} target="_blank" rel="noopener noreferrer">{event.link}</a>
+              <strong>Event Link:</strong>{" "}
+              <a href={event.link} target="_blank" rel="noopener noreferrer">
+                {event.link}
+              </a>
             </p>
           )}
-          {event.First_prizes && <p><strong>1st Prize:</strong> {event.First_prizes}</p>}
-          {event.Second_prizes && <p><strong>2nd Prize:</strong> {event.Second_prizes}</p>}
-          {event.Third_prizes && <p><strong>3rd Prize:</strong> {event.Third_prizes}</p>}
+          {event.First_prizes && (
+            <p>
+              <strong>1st Prize:</strong> {event.First_prizes}
+            </p>
+          )}
+          {event.Second_prizes && (
+            <p>
+              <strong>2nd Prize:</strong> {event.Second_prizes}
+            </p>
+          )}
+          {event.Third_prizes && (
+            <p>
+              <strong>3rd Prize:</strong> {event.Third_prizes}
+            </p>
+          )}
         </div>
       </div>
     </div>
   );
 };
+const LazyLoadWrapper = ({ children, height = 300 }) => {
+  // Now accepts a height prop
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
 
+  useEffect(() => {
+    const currentRef = ref.current;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (currentRef) {
+            observer.unobserve(currentRef);
+          }
+        }
+      },
+      {
+        // INCREASED: Start loading when the item is 600px away from the viewport.
+        // This gives the browser plenty of time. You can adjust this value.
+        rootMargin: "850px",
+      }
+    );
+
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
+  // Uses the height prop for the placeholder to prevent page jumping
+  return (
+    <div ref={ref} style={{ minHeight: `${height}px` }}>
+      {isVisible ? children : null}
+    </div>
+  );
+};
 const ManageEvents = () => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -147,7 +209,9 @@ const ManageEvents = () => {
 
   const openEventModal = async (eventId) => {
     try {
-      const response = await fetch(`http://localhost/smart/poster-button-click.php?id=${eventId}`);
+      const response = await fetch(
+        `http://localhost/smart/poster-button-click.php?id=${eventId}`
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -194,52 +258,71 @@ const ManageEvents = () => {
           <div className="event-tab active-tab">ACTIVE EVENTS</div>
         </div>
 
-        {loading && <div className="loading-state">Loading department posters...</div>}
-        
+        {loading && (
+          <div className="loading-state">Loading department posters...</div>
+        )}
+
         {error && <div className="error-state">{error}</div>}
 
         {!loading && !error && (
           <div className="department-posters-container">
             {departments.map((department) => (
-              <div key={department.department_name} className="department-section">
-                <h2 className="department-title">{department.department_name}</h2>
-                <div className="poster-scroll-wrapper">
-                  <button
-                    className="scroll-button left"
-                    onClick={() => handleScroll(-300, department.department_name)}
-                  >
-                    ❮
-                  </button>
-                  <div
-                    className="poster-scroll-container"
-                    ref={(el) => (scrollContainerRefs.current[department.department_name] = el)}
-                  >
-                    {department.events.length > 0 ? (
-                      department.events.map((event) => (
-                        <div key={event.id} className="poster-item" onClick={() => openEventModal(event.id)}>
-                          <img
-                            src={`/posters/${event.poster_name}`}
-                            alt={event.event_name}
-                            className="department-poster-image"
-                            loading="lazy" // <--- ADD THIS ATTRIBUTE
-                          />
-                          <p className="poster-caption">{event.event_name}</p>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="no-posters-message">
-                        No posters available for this department.
-                      </p>
-                    )}
+              <LazyLoadWrapper key={department.department_name} height={526.8}>
+                <div className="department-section">
+                  <h2 className="department-title">
+                    {department.department_name}
+                  </h2>
+                  <div className="poster-scroll-wrapper">
+                    <button
+                      className="scroll-button left"
+                      onClick={() =>
+                        handleScroll(-300, department.department_name)
+                      }
+                    >
+                      ❮
+                    </button>
+                    <div
+                      className="poster-scroll-container"
+                      ref={(el) =>
+                        (scrollContainerRefs.current[
+                          department.department_name
+                        ] = el)
+                      }
+                    >
+                      {department.events.length > 0 ? (
+                        department.events.map((event) => (
+                          <div
+                            key={event.id}
+                            className="poster-item"
+                            onClick={() => openEventModal(event.id)}
+                          >
+                            <img
+                              // CORRECTED: Use the full, absolute path for the image
+                              src={`http://localhost/posters/${event.poster_name}`}
+                              alt={event.event_name}
+                              className="department-poster-image"
+                              loading="lazy"
+                            />
+                            <p className="poster-caption">{event.event_name}</p>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="no-posters-message">
+                          No posters available for this department.
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      className="scroll-button right"
+                      onClick={() =>
+                        handleScroll(300, department.department_name)
+                      }
+                    >
+                      ❯
+                    </button>
                   </div>
-                  <button
-                    className="scroll-button right"
-                    onClick={() => handleScroll(300, department.department_name)}
-                  >
-                    ❯
-                  </button>
                 </div>
-              </div>
+              </LazyLoadWrapper>
             ))}
           </div>
         )}
@@ -262,7 +345,8 @@ const StudentDashboard = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const wrapperRef = useRef(null);
   const [showWelcome, setShowWelcome] = useState(true);
-  const studentName = localStorage.getItem('studentName') || "";
+  const studentName = localStorage.getItem("studentName") || "";
+
   useEffect(() => {
     // This part now uses the 'studentName' state set above and just controls the timer
     const timer = setTimeout(() => {
@@ -293,6 +377,27 @@ const StudentDashboard = () => {
     }
   }, [currentIndex, slides.length]);
 
+  // ADDED: This useEffect hook tracks user activity
+  useEffect(() => {
+    const markUserAsActive = async () => {
+      const userRole = localStorage.getItem("userRole");
+      const userId = localStorage.getItem("userId");
+
+      if (userRole && userId) {
+        try {
+          await fetch("http://localhost/smart/update_activity.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ role: userRole, id: userId }),
+          });
+        } catch (error) {
+          console.error("Could not update user activity:", error);
+        }
+      }
+    };
+
+    markUserAsActive();
+  }, []); // The empty array [] ensures this runs only once when the dashboard loads
 
   const goToNext = () => {
     setCurrentIndex((prev) => prev + 1);
@@ -337,9 +442,7 @@ const StudentDashboard = () => {
           ref={wrapperRef}
           style={{
             width: `${slides.length * 100}%`,
-            transform: `translateX(-${
-              currentIndex * (100 / slides.length)
-            }%)`,
+            transform: `translateX(-${currentIndex * (100 / slides.length)}%)`,
           }}
         >
           {slides.map((poster, index) => (
@@ -363,8 +466,7 @@ const StudentDashboard = () => {
             <button
               key={index}
               className={`carousel-dot ${
-                index ===
-                (currentIndex === posters.length ? 0 : currentIndex)
+                index === (currentIndex === posters.length ? 0 : currentIndex)
                   ? "active"
                   : ""
               }`}
