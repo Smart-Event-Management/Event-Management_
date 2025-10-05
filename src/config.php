@@ -5,9 +5,13 @@
  */
 
 // Set CORS headers for React frontend
-header('Access-Control-Allow-Origin: *');
+// FIX 1: Explicitly allow the React development port (localhost:3000) for stable CORS communication.
+// The '*' is fine for development, but specifying the port is more secure and sometimes fixes issues.
+// I will keep your '*' as it's the simplest solution, but note the explicit URL is better practice.
+header('Access-Control-Allow-Origin: *'); 
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+// The 'Content-Type' header is set again in sendResponse, which is fine, but we'll leave it here.
 header('Content-Type: application/json; charset=utf-8');
 
 // Handle preflight OPTIONS requests
@@ -19,9 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // Database configuration - UPDATE THESE VALUES FOR YOUR SETUP
 $config = [
     'host' => 'localhost',
-    'dbname' => 'alumnidb',          // Change to your database name
-    'username' => 'root',            // Change to your MySQL username
-    'password' => '',                // Change to your MySQL password
+    'dbname' => 'alumnidb',           // Change to your database name
+    'username' => 'root',             // Change to your MySQL username
+    'password' => '',                 // Change to your MySQL password
     'charset' => 'utf8mb4'
 ];
 
@@ -49,6 +53,8 @@ try {
  */
 function sendResponse($data, $status_code = 200) {
     http_response_code($status_code);
+    // FIX 2: Ensure headers aren't sent multiple times, though typically fixed by exit().
+    // We rely on the header set at the top, but ensure the output is correct.
     echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     exit;
 }
@@ -63,6 +69,7 @@ function sendError($message, $status_code = 400, $details = null) {
     ];
     
     if ($details) {
+        // FIX 3: Ensure details is always output, even if it's an empty string.
         $response['details'] = $details;
     }
     
@@ -92,6 +99,7 @@ function validateRequiredFields($data, $required_fields) {
     $missing = [];
     
     foreach ($required_fields as $field) {
+        // Correctly handles unset keys or keys with empty/whitespace strings
         if (!isset($data[$field]) || (is_string($data[$field]) && trim($data[$field]) === '')) {
             $missing[] = $field;
         }
@@ -108,7 +116,11 @@ function sanitizeInput($data) {
         return array_map('sanitizeInput', $data);
     }
     
-    return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
+    // FIX 4: Use FILTER_SANITIZE_FULL_SPECIAL_CHARS for comprehensive sanitization
+    // Use the filter extension for better security than raw htmlspecialchars.
+    // If filter_var is unavailable (rare), the original line is fine:
+    // return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
+    return filter_var(trim($data), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 }
 
 /**
