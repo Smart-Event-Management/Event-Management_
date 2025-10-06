@@ -921,6 +921,21 @@ const ManageEvents = () => {
   );
 };
 
+// Copyright Footer Component
+const CopyrightFooter = () => {
+  const currentYear = new Date().getFullYear();
+  
+  return (
+    <footer className="copyright-footer">
+      <div className="copyright-content">
+        <p className="copyright-text">
+          © {currentYear} RVR & JC College of Engineering. All Rights Reserved.
+        </p>
+      </div>
+    </footer>
+  );
+};
+
 const WelcomePopup = ({ name }) => {
   return (
     <div className="welcome-popup-overlay">
@@ -1080,6 +1095,7 @@ const AdminDashboard = () => {
       <main>
         <ManageEvents />
       </main>
+      <CopyrightFooter />
     </>
   );
 };
