@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./OrganizerDashboard.css";
-
+import Lottie from "lottie-react";
+import welcomeAnimation from "./Welcome.json"; // Make sure this path is correct
 // Utility function to decode HTML entities for display
 function decodeHtml(html) {
   const txt = document.createElement("textarea");
@@ -810,11 +811,17 @@ const ManageEvents = () => {
   );
 };
 
-const WelcomePopup = ({ name }) => {
+const WelcomePopup = () => {
   return (
     <div className="welcome-popup-overlay">
       <div className="welcome-popup-content">
-        <h1>Welcome, {name}!</h1>
+        <Lottie 
+          animationData={welcomeAnimation} 
+          loop={true} 
+          className="popup-lottie-animation"
+        />
+        {/* The progress bar remains to show how long until it closes */}
+        <div className="popup-progress-bar"></div>
       </div>
     </div>
   );
@@ -834,13 +841,14 @@ const OrganizerDashboard = () => {
   const wrapperRef = useRef(null);
   const [showWelcome, setShowWelcome] = useState(true);
   const studentName = localStorage.getItem("studentName") || "";
-
+ 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowWelcome(false);
-    }, 3500);
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
+  
 
   useEffect(() => {
     if (slides.length <= 1) return;

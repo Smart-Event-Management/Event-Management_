@@ -137,18 +137,7 @@ body {
     opacity: 1;
 }
 
-/* Welcome Container Styles */
-.welcome-container {
-    text-align: center;
-    padding-top: 100px;
-    padding-bottom: 50px;
-}
 
-.welcome-heading {
-    font-size: 3rem;
-    color: #333;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
 
 /* Full-Screen Carousel Styles */
 .carousel-container {
@@ -505,18 +494,35 @@ body {
 
 .modal-close-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 2rem;
+  z-index: 20; /* Puts it on top of everything */
+  
+  /* 3. These values give it a nice gap from the corner */
+  top: 15px;
+  right: 15px;
+
+  /* Rest of the styling for the button */
+  background: rgba(255, 255, 255, 0.9);
+  color: #555;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 34px; /* Helps vertically center the '×' */
+  text-align: center;
   cursor: pointer;
-  color: #333;
+  padding: 0;
+  transition: all 0.2s ease;
 }
 
 .modal-header {
   text-align: center;
-  margin-bottom: 1.5rem;
+ /* 1. This pushes the poster down to create a clean space for the buttons */
+  padding-top: 50px; 
+  
+  /* 2. This adds space between the poster/title and the details below it */
+  margin-bottom: 24px;
 }
 
 .modal-poster {
@@ -695,3 +701,143 @@ body {
 }
 
 /* ... (Rest of existing CSS, including Modal and Animations) ... */
+
+
+
+/* Styles for the transparent overlay that blocks clicks */
+.auth-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* Styles for the "Please Login" popup */
+.login-prompt-modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1001;
+  color: #333;
+}
+
+.login-prompt-modal h3 {
+  margin-top: 0;
+  margin-bottom: 1rem; /* ADDED: This creates the gap you wanted */
+  font-size: 1.5rem;
+  min-width: 320px; /* Optional: Gives the modal a minimum width */
+
+}
+
+/* Added style for the paragraph text */
+.login-prompt-modal p {
+  margin-bottom: 1.5rem; /* Adds space above the buttons */
+  color: #555;
+}
+.login-prompt-actions button {
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none; /* Remove default browser border */
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  /* --- NEW LINES TO FIX BLURRINESS --- */
+
+  /* 1. Force sharper font rendering on Chrome/Safari/Firefox */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* 2. Add a very subtle shadow to create a sharper edge */
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+
+  /* 3. Ensure the text is fully opaque and not semi-transparent */
+  opacity: 1;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+}
+.login-prompt-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+/* Optional: Add hover effects */
+.login-prompt-actions .btn-primary:hover {
+  background-color: #0056b3;
+}
+.login-prompt-actions .btn-secondary:hover {
+  background-color: #5a6268;
+}
+/* Add this to your main CSS file (e.g., StudentDashboard.css) */
+
+/* --- ANIMATIONS FOR THE WELCOME POPUP --- */
+
+/* --- CORRECTED LOTTIE-ONLY POPUP STYLES --- */
+
+/* Keyframe animations (fadeIn, bounceIn, progress) are unchanged */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes bounceIn {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes progress { from { width: 100%; } to { width: 0%; } }
+
+/* Overlay style is unchanged */
+.welcome-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Main content box with all fixes */
+.welcome-popup-content {
+  /* --- THESE 3 LINES ARE THE FIX --- */
+  position: relative;  /* This is the anchor for the progress bar */
+  border-radius: 20px; /* This rounds the corners */
+  overflow: hidden;    /* This clips the content (animation and bar) to the rounded corners */
+
+  /* You can adjust the size as you like */
+  width: 420px;
+  height: 360px;
+  
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  background: #1e1e1e;
+}
+
+/* Lottie animation style */
+.popup-lottie-animation {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: scale(1.5); 
+}
+
+/* Progress bar style */
+.popup-progress-bar {
+  position: absolute; /* This tells the bar to position itself relative to the parent */
+  bottom: 0;        /* This sticks it to the bottom of the parent */
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+  z-index: 3; /* Keep it on top of the animation */
+  animation: progress 5s linear forwards; /* Make sure this matches your JS timer */
+}
