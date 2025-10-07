@@ -1,4 +1,7 @@
+import Lottie from "lottie-react";
+import welcomeAnimation from "./Welcome.json"; // Make sure this path is correct
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom"; // Added for popup
 import "./StudentDashboard.css";
 
 const NavLink = ({ href, children }) => (
@@ -267,7 +270,7 @@ const ManageEvents = () => {
         {!loading && !error && (
           <div className="department-posters-container">
             {departments.map((department) => (
-              <LazyLoadWrapper key={department.department_name} height={526.8}>
+              <LazyLoadWrapper key={department.department_name} height={527}>
                 <div className="department-section">
                   <h2 className="department-title">
                     {department.department_name}
@@ -349,6 +352,12 @@ const CopyrightFooter = () => {
 };
 
 const StudentDashboard = () => {
+  // --- ADDED FOR POPUP ---
+  const isLoggedIn = !!localStorage.getItem("userId");
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const navigate = useNavigate();
+  // -------------------------
+
   const [posters] = useState([
     { id: 1, image: "/scroll/1.jpg" },
     { id: 2, image: "/scroll/2.jpg" },
@@ -364,10 +373,9 @@ const StudentDashboard = () => {
   const studentName = localStorage.getItem("studentName") || "";
 
   useEffect(() => {
-    // This part now uses the 'studentName' state set above and just controls the timer
     const timer = setTimeout(() => {
       setShowWelcome(false);
-    }, 3500);
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -393,7 +401,7 @@ const StudentDashboard = () => {
     }
   }, [currentIndex, slides.length]);
 
-  // ADDED: This useEffect hook tracks user activity
+  // Activity tracking useEffect is kept
   useEffect(() => {
     const markUserAsActive = async () => {
       const userRole = localStorage.getItem("userRole");
@@ -413,7 +421,7 @@ const StudentDashboard = () => {
     };
 
     markUserAsActive();
-  }, []); // The empty array [] ensures this runs only once when the dashboard loads
+  }, []);
 
   const goToNext = () => {
     setCurrentIndex((prev) => prev + 1);
@@ -500,14 +508,23 @@ const StudentDashboard = () => {
   );
 };
 
-const WelcomePopup = ({ name }) => {
+
+
+
+
+const WelcomePopup = () => {
   return (
     <div className="welcome-popup-overlay">
       <div className="welcome-popup-content">
-        <h1>Welcome, {name}!</h1>
+        <Lottie 
+          animationData={welcomeAnimation} 
+          loop={true} 
+          className="popup-lottie-animation"
+        />
+        {/* The progress bar remains to show how long until it closes */}
+        <div className="popup-progress-bar"></div>
       </div>
     </div>
   );
 };
-
 export default StudentDashboard;

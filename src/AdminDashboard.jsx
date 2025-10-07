@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./AdminDashboard.css";
+import Lottie from "lottie-react";
+import welcomeAnimation from "./Welcome.json"; // Make sure this path is correct
 
 // Utility function to decode HTML entities for display
 function decodeHtml(html) {
@@ -940,7 +942,13 @@ const WelcomePopup = ({ name }) => {
   return (
     <div className="welcome-popup-overlay">
       <div className="welcome-popup-content">
-        <h1>Welcome, {name}!</h1>
+        <Lottie 
+          animationData={welcomeAnimation} 
+          loop={true} 
+          className="popup-lottie-animation"
+        />
+        {/* The progress bar remains to show how long until it closes */}
+        <div className="popup-progress-bar"></div>
       </div>
     </div>
   );
