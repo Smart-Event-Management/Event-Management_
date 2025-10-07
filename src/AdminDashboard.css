@@ -577,6 +577,12 @@ body {
     margin: 0 auto;
 }
 
+
+.copyright-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .copyright-text {
     margin: 0;
     font-size: 0.9rem;
