@@ -1,8 +1,9 @@
-import Lottie from "lottie-react";
-import welcomeAnimation from "./Welcome.json"; // Make sure this path is correct
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom"; // Added for popup
 import "./StudentDashboard.css";
+import Lottie from "lottie-react";
+import welcomeAnimation from "./Welcome.json"; // Make sure this path is correct
+
 
 const NavLink = ({ href, children }) => (
   <a href={href} className="nav-link" tabIndex="0">
@@ -17,7 +18,6 @@ const Navbar = () => {
   const [studentName, setStudentName] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Get student name from localStorage on component mount
   useEffect(() => {
     const name = localStorage.getItem("studentName");
     if (name) {
@@ -31,7 +31,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // CORRECTED: Use localStorage.clear() for a full sign-out
   const handleSignOut = () => {
     localStorage.clear();
     window.location.href = "/login";
@@ -56,7 +55,6 @@ const Navbar = () => {
             </NavLink>
 
             {studentName ? (
-              // Profile Dropdown Button
               <div className="profile-dropdown-container">
                 <button onClick={toggleDropdown} className="profile-button">
                   <span className="profile-name">{studentName}</span>
@@ -76,7 +74,6 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              // Default Login Button
               <button
                 onClick={() => (window.location.href = "/login")}
                 className="login-button"
@@ -105,7 +102,6 @@ const EventDetailsModal = ({ event, onClose }) => {
           &times;
         </button>
         <div className="modal-header">
-          {/* CORRECTED: Use the full, absolute path for the image */}
           <img
             src={`http://localhost/posters/${event.poster}`}
             alt={event.eventName}
@@ -154,14 +150,13 @@ const EventDetailsModal = ({ event, onClose }) => {
     </div>
   );
 };
+
 const LazyLoadWrapper = ({ children, height = 300 }) => {
-  // Now accepts a height prop
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
     const currentRef = ref.current;
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -172,8 +167,6 @@ const LazyLoadWrapper = ({ children, height = 300 }) => {
         }
       },
       {
-        // INCREASED: Start loading when the item is 600px away from the viewport.
-        // This gives the browser plenty of time. You can adjust this value.
         rootMargin: "850px",
       }
     );
@@ -189,13 +182,13 @@ const LazyLoadWrapper = ({ children, height = 300 }) => {
     };
   }, []);
 
-  // Uses the height prop for the placeholder to prevent page jumping
   return (
     <div ref={ref} style={{ minHeight: `${height}px` }}>
       {isVisible ? children : null}
     </div>
   );
 };
+
 const ManageEvents = () => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -300,7 +293,6 @@ const ManageEvents = () => {
                             onClick={() => openEventModal(event.id)}
                           >
                             <img
-                              // CORRECTED: Use the full, absolute path for the image
                               src={`http://localhost/posters/${event.poster_name}`}
                               alt={event.event_name}
                               className="department-poster-image"
@@ -332,22 +324,6 @@ const ManageEvents = () => {
       </section>
       <EventDetailsModal event={selectedEvent} onClose={closeEventModal} />
     </>
-  );
-};
-
-
-// Copyright Footer Component
-const CopyrightFooter = () => {
-  const currentYear = new Date().getFullYear();
-  
-  return (
-    <footer className="copyright-footer">
-      <div className="copyright-content">
-        <p className="copyright-text">
-          © {currentYear} RVR & JC College of Engineering. All Rights Reserved.
-        </p>
-      </div>
-    </footer>
   );
 };
 
@@ -452,7 +428,6 @@ const StudentDashboard = () => {
         <div className="loading-container">
           <p>No posters available.</p>
         </div>
-        <CopyrightFooter />
       </>
     );
   }
@@ -500,19 +475,51 @@ const StudentDashboard = () => {
           ))}
         </div>
       </div>
-      <main>
-        <ManageEvents />
-      </main>
-      <CopyrightFooter />
+      
+      {/* ADDED: Wrapper, conditional overlay, and conditional popup */}
+      <div style={{ position: "relative" }}>
+        <main>
+          <ManageEvents />
+        </main>
+        <CopyrightFooter />
+        
+
+        {!isLoggedIn && (
+          <div
+            className="auth-overlay"
+            onClick={() => setShowLoginPrompt(true)}
+            title="Please login to interact with events"
+          ></div>
+        )}
+      </div>
+
+      {showLoginPrompt && (
+        <div className="modal-overlay">
+          <div className="login-prompt-modal">
+            <h3>Please Login</h3>
+            <p>You need to be logged in to view event details.</p>
+            <div className="login-prompt-actions">
+              <button
+                className="btn-secondary"
+                onClick={() => setShowLoginPrompt(false)}
+              >
+                Close
+              </button>
+              <button
+                className="btn-primary"
+                onClick={() => navigate("/login")}
+              >
+                Login Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
 
-
-
-
-
-const WelcomePopup = () => {
+const WelcomePopup = ({ name }) => {
   return (
     <div className="welcome-popup-overlay">
       <div className="welcome-popup-content">
@@ -527,4 +534,18 @@ const WelcomePopup = () => {
     </div>
   );
 };
+const CopyrightFooter = () => {
+  const currentYear = new Date().getFullYear();
+  
+  return (
+    <footer className="copyright-footer">
+      <div className="copyright-content">
+        <p className="copyright-text">
+          © {currentYear} RVR & JC College of Engineering. All Rights Reserved.
+        </p>
+      </div>
+    </footer>
+  );
+};
+
 export default StudentDashboard;

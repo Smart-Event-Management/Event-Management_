@@ -824,7 +824,6 @@ const CopyrightFooter = () => {
     </footer>
   );
 };
-const WelcomePopup = () => {
 const WelcomePopup = ({ name }) => {
   return (
     <div className="welcome-popup-overlay">

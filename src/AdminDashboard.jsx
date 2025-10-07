@@ -972,7 +972,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowWelcome(false);
-    }, 3500);
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
 
