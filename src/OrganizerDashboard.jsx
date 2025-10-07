@@ -810,7 +810,20 @@ const ManageEvents = () => {
     </>
   );
 };
-
+// Copyright Footer Component
+const CopyrightFooter = () => {
+  const currentYear = new Date().getFullYear();
+  
+  return (
+    <footer className="copyright-footer">
+      <div className="copyright-content">
+        <p className="copyright-text">
+          © {currentYear} RVR & JC College of Engineering. All Rights Reserved.
+        </p>
+      </div>
+    </footer>
+  );
+};
 const WelcomePopup = () => {
   return (
     <div className="welcome-popup-overlay">
@@ -871,7 +884,7 @@ const OrganizerDashboard = () => {
         "transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
     }
   }, [currentIndex, slides.length]);
-
+  
   // ADDED: This useEffect hook tracks user activity
   useEffect(() => {
     const markUserAsActive = async () => {
@@ -973,6 +986,7 @@ const OrganizerDashboard = () => {
       <main>
         <ManageEvents />
       </main>
+      <CopyrightFooter />
     </>
   );
 };

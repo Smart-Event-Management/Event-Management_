@@ -335,6 +335,22 @@ const ManageEvents = () => {
   );
 };
 
+
+// Copyright Footer Component
+const CopyrightFooter = () => {
+  const currentYear = new Date().getFullYear();
+  
+  return (
+    <footer className="copyright-footer">
+      <div className="copyright-content">
+        <p className="copyright-text">
+          © {currentYear} RVR & JC College of Engineering. All Rights Reserved.
+        </p>
+      </div>
+    </footer>
+  );
+};
+
 const StudentDashboard = () => {
   // --- ADDED FOR POPUP ---
   const isLoggedIn = !!localStorage.getItem("userId");
@@ -436,6 +452,7 @@ const StudentDashboard = () => {
         <div className="loading-container">
           <p>No posters available.</p>
         </div>
+        <CopyrightFooter />
       </>
     );
   }
@@ -483,44 +500,10 @@ const StudentDashboard = () => {
           ))}
         </div>
       </div>
-      
-      {/* ADDED: Wrapper, conditional overlay, and conditional popup */}
-      <div style={{ position: "relative" }}>
-        <main>
-          <ManageEvents />
-        </main>
-
-        {!isLoggedIn && (
-          <div
-            className="auth-overlay"
-            onClick={() => setShowLoginPrompt(true)}
-            title="Please login to interact with events"
-          ></div>
-        )}
-      </div>
-
-      {showLoginPrompt && (
-        <div className="modal-overlay">
-          <div className="login-prompt-modal">
-            <h3>Please Login</h3>
-            <p>You need to be logged in to view event details.</p>
-            <div className="login-prompt-actions">
-              <button
-                className="btn-secondary"
-                onClick={() => setShowLoginPrompt(false)}
-              >
-                Close
-              </button>
-              <button
-                className="btn-primary"
-                onClick={() => navigate("/login")}
-              >
-                Login Now
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <main>
+        <ManageEvents />
+      </main>
+      <CopyrightFooter />
     </>
   );
 };

@@ -568,7 +568,27 @@ body {
 .modal-body a:hover {
   text-decoration: underline;
 }
+/* Copyright Footer Styles */
+.copyright-footer {
+    background-color: #1f2937;
+    color: #9ca3af;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    margin-top: 3rem;
+    border-top: 1px solid #374151;
+}
 
+.copyright-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.copyright-text {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.4;
+}
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
     .navbar-content {
