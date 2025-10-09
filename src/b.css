@@ -261,9 +261,9 @@ body {
 /* Role Buttons */
 .Event-login {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 20px;
-  gap: 15px;
+  gap: 20px;
 }
 
 .role-option {
@@ -314,4 +314,139 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+/* --- Add these styles to your b.css file --- */
+
+/* --- Add these styles to your b.css file for the popup --- */
+
+/* This styles the dark, blurred background behind the popup */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* A subtle dark tint */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+}
+.modal-overlay .input-box {
+  margin: 15px 0; 
+}
+/* This styles the 'X' button in the corner */
+.modal-close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: #fff;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.modal-close-button:hover {
+    opacity: 1;
+}
+
+/* This adds the white border and shadow to the selected role button */
+.Event-btn.selected {
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    transform: scale(1.05);
+}
+
+/* This styles the green success message after the password is reset */
+/* --- REPLACE your old .success-message styles with this in b.css --- */
+
+.success-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem 0;
+    background: transparent; /* This is the key change */
+}
+
+/* This styles the success message text to be readable on the glass background */
+.success-message p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #fff; /* White text to match the theme */
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Adds a shadow for readability */
+}
+
+/* The "Close" button already has the `btn` class, so it will 
+  automatically get the white, rounded style and hover animation 
+  of your main login button. No changes are needed for it.
+*//* This styles the new success title */
+.success-view h1 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+.success-view p {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #eee;
+    margin-bottom: 2rem;
+    max-width: 80%;
+}
+.success-view .btn {
+    width: 100%;
+}
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  font-size: 1rem;
+  color: #ccc;
+}
+/* New container for the "Show Password" checkbox */
+.show-password-container {
+  display: flex;
+  justify-content: flex-start;
+  /* Top, Right/Left, Bottom, Left-indent */
+  margin: -5px 0 20px 10px; 
+  font-size: 0.9rem;
+}
+
+.show-password-container label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+/* Add this new rule to b.css */
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #fff;
+  text-decoration: none;
+  font-size: 17px; /* Matches your .remember-forgot font-size */
+  cursor: pointer;
+  font-family: inherit; /* Use the same font as the rest of the form */
+}
+
+.link-button:hover {
+  text-decoration: underline;
 }
