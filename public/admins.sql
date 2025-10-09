@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2025 at 05:46 PM
+-- Generation Time: Oct 09, 2025 at 08:13 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,16 +33,17 @@ CREATE TABLE `admins` (
   `department` varchar(100) NOT NULL,
   `year_of_graduation` int(11) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`id`, `username`, `department`, `year_of_graduation`, `password`, `created_at`) VALUES
-(2, 'hima', 'it', 2027, '$2y$10$KK31oytD1/sjmbj.ptYVYuXZkcG48OGQDExb6VviI4Pt3CmeFhTjG', '2025-08-07 04:42:36'),
-(3, 'mukesh', 'IT', 2027, '$2b$12$tFG7aR12anAaIlrfRD5mF.HahsAdHprhRVItbcQtAt8DFDhnn76v6', '2025-10-05 10:49:36');
+INSERT INTO `admins` (`id`, `username`, `department`, `year_of_graduation`, `password`, `created_at`, `updated_at`) VALUES
+(2, 'hima', 'it', 2027, '$2y$10$KK31oytD1/sjmbj.ptYVYuXZkcG48OGQDExb6VviI4Pt3CmeFhTjG', '2025-08-07 04:42:36', '2025-10-09 17:02:30'),
+(3, 'mukesh', 'IT', 2027, '$2y$10$rxdrNiGkNIEw3D1YidIkWO6yY2H1ZUqRpgbIeFC98nFFjBlD7Ecwu', '2025-10-05 10:49:36', '2025-10-09 18:02:24');
 
 --
 -- Indexes for dumped tables

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2025 at 03:53 PM
+-- Generation Time: Oct 09, 2025 at 08:13 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,15 +34,16 @@ CREATE TABLE `organizers` (
   `year_of_graduation` int(11) NOT NULL,
   `password` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `last_seen` datetime DEFAULT NULL
+  `last_seen` datetime DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `organizers`
 --
 
-INSERT INTO `organizers` (`id`, `username`, `department`, `year_of_graduation`, `password`, `created_at`, `last_seen`) VALUES
-(1, 'siva1234', 'it', 2027, '$2y$10$3H6bEPhLteh6Q3l/TSBPaeMPVbR3SlLpNaglG0zeoHDF3HwqUQn3e', '2025-10-01 10:20:25', '2025-10-05 19:02:49');
+INSERT INTO `organizers` (`id`, `username`, `department`, `year_of_graduation`, `password`, `created_at`, `last_seen`, `updated_at`) VALUES
+(1, 'siva1234', 'it', 2027, '$2y$10$3H6bEPhLteh6Q3l/TSBPaeMPVbR3SlLpNaglG0zeoHDF3HwqUQn3e', '2025-10-01 10:20:25', '2025-10-08 00:21:47', '2025-10-09 17:02:06');
 
 --
 -- Indexes for dumped tables
