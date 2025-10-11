@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 04, 2025 at 01:20 PM
+-- Generation Time: Oct 11, 2025 at 08:02 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `event_registration`
+-- Table structure for table `event`
 --
 
-CREATE TABLE `event_registration` (
+CREATE TABLE `event` (
   `id` int(11) NOT NULL,
   `Event_name` varchar(225) NOT NULL,
   `Time` varchar(225) NOT NULL,
@@ -43,15 +43,15 @@ CREATE TABLE `event_registration` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `event_registration`
+-- Dumping data for table `event`
 --
 
-INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `Department`, `Poster_name`, `Event_links`, `First_prizes`, `Second_prizes`, `Third_prizes`, `Created_at`) VALUES
+INSERT INTO `event` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `Department`, `Poster_name`, `Event_links`, `First_prizes`, `Second_prizes`, `Third_prizes`, `Created_at`) VALUES
 (2, 'Innovation, design and Entrepreneurship (ide) bootcamp', '2:00pm', '17.03.25', '', 'CSE', 'Innovation,design_and_Entrepreneurship_(ide)_bootcamp.jpg', 'https://docs.google.com/Innovation,design_and_Entrepreneurship_(ide)_bootcamp', '4000', '3000', '1500', '2025-10-04 08:59:33.637951'),
 (3, 'Club spark', '2:00pm', '06/07/2025', 'HT3 lab', 'Information Technology', 'Club_spark.jpg', 'https://docs.google.com/Clubspark/googleform', '5000', '2000', '1000', '2025-09-26 15:55:03.340576'),
 (4, 'Aiml Arena\'25 coding', '8:00 AM', '03.09.2025', 'HT Labs1&2', 'CSE', 'Aiml_Arena\'25_coding_contest.jpg', 'https://docs.google.com/AimlArena\'25coding_contest/googleform', '4000', '2000', '1500', '2025-10-02 03:06:07.672735'),
 (5, 'Amaravati quantunm valley hackathon 2025', '11:00am', '28.08.2025', 'HT Labs1&2', 'CSBS', 'Amaravati_quantunm_valley_hackathon_2025.jpg', 'https://docs.google.com/Amaravatiquantunm_valley_hack', '4000', '3500', '2500', '2025-10-02 03:06:14.875070'),
-(6, 'Colorido', '10:00', '2025-03-15', 'OAT', 'Civil Engineering', 'Colorido_update_1759576706.jpg', 'https://docs.google.com/Colorido', '5000', '2000', '1000', '2025-10-04 11:18:26.559487'),
+(6, 'Colorido', '10:00', '2025-03-15', 'OAT', 'Civil Engineering', 'Colorido.jpg', 'https://docs.google.com/Colorido', '5000', '2000', '1000', '2025-10-09 15:36:34.895268'),
 (7, 'Engineers\'day celebration Quiz', '10:00AM', '26.09.2025', 'HT3 lab', 'CSE', 'Engineer\'sday_celebration.jpg', 'https://docs.google.com/Engineer\'sday_celebration', '4500', '3000', '1000', '2025-10-02 03:06:19.778746'),
 (8, 'International yoga day', '11:00 AM', '21.06.2025', 'OAT', 'Mechanical Engineering', 'International_yoga_day.jpg', 'https://docs.google.com/International_yoga_day', '2500', '1500', '1000', '2025-09-26 15:55:03.340576'),
 (9, 'Medhanvesh', '8:00 AM', '06.07.2025', 'HT Lab4&5', 'ISTE', 'Medhanvesh.jpg', 'https://docs.google.com/Medhanvesh', '4500', '4000', '2500', '2025-09-26 15:55:03.340576'),
@@ -71,9 +71,9 @@ INSERT INTO `event_registration` (`id`, `Event_name`, `Time`, `Date`, `Venue`, `
 --
 
 --
--- Indexes for table `event_registration`
+-- Indexes for table `event`
 --
-ALTER TABLE `event_registration`
+ALTER TABLE `event`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -81,9 +81,9 @@ ALTER TABLE `event_registration`
 --
 
 --
--- AUTO_INCREMENT for table `event_registration`
+-- AUTO_INCREMENT for table `event`
 --
-ALTER TABLE `event_registration`
+ALTER TABLE `event`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 COMMIT;
 
