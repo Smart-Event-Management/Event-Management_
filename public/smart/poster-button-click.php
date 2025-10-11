@@ -69,7 +69,7 @@ class EventAPI {
             }
             
             $query = "SELECT id, Event_name, Time, Date, Venue, Department, Poster_name, Event_links, First_prizes, Second_prizes, Third_prizes
-                     FROM event_registration 
+                     FROM event 
                      WHERE id = ? 
                      LIMIT 1";
             

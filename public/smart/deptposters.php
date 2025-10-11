@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 class EventsAPI {
     private $conn;
-    private $table_name = "event_registration";
+    private $table_name = "event";
 
     public function __construct($db) {
         $this->conn = $db;

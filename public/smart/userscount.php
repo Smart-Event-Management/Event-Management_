@@ -29,7 +29,7 @@ try {
 try {
     // This single query gets all counts. "Active" is defined as activity in the last 5 minutes.
     $sql = "SELECT
-        (SELECT COUNT(*) FROM event_registration) AS total_events,
+        (SELECT COUNT(*) FROM event) AS total_events,
         
         (SELECT COUNT(*) FROM students) AS total_students,
         (SELECT COUNT(*) FROM students WHERE last_seen > NOW() - INTERVAL 30 MINUTE) AS active_students,

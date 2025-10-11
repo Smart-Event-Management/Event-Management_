@@ -125,7 +125,7 @@ function getAllEvents() {
                     Department as department, Poster_name as poster_name, Event_links as event_links, 
                     First_prizes as first_prizes, Second_prizes as second_prizes, 
                     Third_prizes as third_prizes, created_at
-                FROM event_registration 
+                FROM event 
                 ORDER BY Date DESC, Time DESC";
         
         $stmt = $pdo->query($sql);
@@ -159,7 +159,7 @@ function getEvent($id) {
                     Department as department, Poster_name as poster_name, Event_links as event_links, 
                     First_prizes as first_prizes, Second_prizes as second_prizes, 
                     Third_prizes as third_prizes, created_at
-                FROM event_registration 
+                FROM event
                 WHERE id = ?";
         
         $stmt = $pdo->prepare($sql);
@@ -254,7 +254,7 @@ function createEvent() {
     // Validation remains the same...
     
     try {
-        $sql = "INSERT INTO event_registration (
+        $sql = "INSERT INTO event (
                     Event_name, Time, Date, Venue, Department, Poster_name, 
                     Event_links, First_prizes, Second_prizes, Third_prizes, created_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
@@ -287,7 +287,7 @@ function updateEvent($id) {
     global $pdo;
 
     // --- 1. Fetch existing event to get the current poster name ---
-    $stmt = $pdo->prepare("SELECT Poster_name FROM event_registration WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT Poster_name FROM event WHERE id = ?");
     $stmt->execute([$id]);
     $existing_event = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -335,7 +335,7 @@ function updateEvent($id) {
     
     // --- 4. Update the database with the determined data ---
     try {
-        $sql = "UPDATE event_registration SET 
+        $sql = "UPDATE event SET 
                     Event_name = ?, Department = ?, Date = ?, Time = ?, Venue = ?, 
                     Poster_name = ?, Event_links = ?, First_prizes = ?, 
                     Second_prizes = ?, Third_prizes = ? 
@@ -373,7 +373,7 @@ function deleteEvent($id) {
     
     try {
         // Check if event exists first
-        $check_sql = "SELECT Event_name, Poster_name FROM event_registration WHERE id = ?";
+        $check_sql = "SELECT Event_name, Poster_name FROM event WHERE id = ?";
         $check_stmt = $pdo->prepare($check_sql);
         $check_stmt->execute([$id]);
         $event = $check_stmt->fetch();
@@ -383,7 +383,7 @@ function deleteEvent($id) {
         }
         
         // Delete the event from the database
-        $delete_sql = "DELETE FROM event_registration WHERE id = ?";
+        $delete_sql = "DELETE FROM event WHERE id = ?";
         $delete_stmt = $pdo->prepare($delete_sql);
         $result = $delete_stmt->execute([$id]);
         
